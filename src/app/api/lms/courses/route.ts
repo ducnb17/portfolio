@@ -18,8 +18,8 @@ export interface CourseEntry {
 const STATIC_COURSES: CourseEntry[] = [
   // ── Nhóm: Khóa học (giá hời — hiển thị đầu tiên) ──
   {
-    id: 'khoahoc-group-1',
-    name: 'Khóa học giá hời 1',
+    id: 'khoahoc-group',
+    name: 'Khóa học giá hời',
     mimeType: 'application/vnd.google-apps.folder',
     group: 'courses',
     urls: [
@@ -177,15 +177,7 @@ const STATIC_COURSES: CourseEntry[] = [
 'https://drive.google.com/drive/folders/1sL2iWGa3vJsH4kG4qXwl_c1OW_hFuSA5',
 'https://drive.google.com/drive/folders/1d8H8FOoxzHeDaOu-CczBNIPDsILfhH1D',
 'https://drive.google.com/drive/folders/13atqwyW93p4LjwVbIHGQuQz5TGM6BWzj',
-    ],
-  },
-  {
-    id: 'khoahoc-group-2',
-    name: 'Khóa học giá hời 2',
-    mimeType: 'application/vnd.google-apps.folder',
-    group: 'courses',
-    urls: [
-      'https://drive.google.com/drive/folders/1pjNn2Wc_f5dLEfF023m5jvMEyF2s2fWj',
+'https://drive.google.com/drive/folders/1pjNn2Wc_f5dLEfF023m5jvMEyF2s2fWj',
 'https://drive.google.com/drive/folders/17njJLVzyVPt28FMA0ctDMETUKxhHl_Ze',
 'https://drive.google.com/drive/folders/1jnfGmwCaqg2nr5e2KhVznxcc8ZQl2zY1',
 'https://drive.google.com/drive/folders/1RQBvQyBK38tt2hMgw0tVosz8q7IOP_1x',
