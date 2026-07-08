@@ -1,0 +1,1 @@
+/** * Danh sách email được phép truy cập LMS */ export const allowedEmails = (process.env.ALLOWED_EMAILS || 'ducnb17@gmail.com').split(',').map(email => email.trim().toLowerCase()); export function isAllowedEmail(email: string): boolean { return allowedEmails.includes(email.trim().toLowerCase()); }
