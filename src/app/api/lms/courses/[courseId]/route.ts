@@ -33,8 +33,8 @@ interface CourseDetail {
 // ── Map group courses → danh sách folder IDs thực trên Drive ──────────────────
 // Mỗi folder trong group = 1 chapter trong UI (tên lấy từ Drive API)
 const GROUP_COURSE_FOLDERS: Record<string, { name: string; folderIds: string[] }> = {
-  'khoahoc-group-1': {
-    name: 'Khóa học giá hời 1',
+  'khoahoc-group': {
+    name: 'Khóa học giá hời',
     folderIds: [
       '13AKCXOOp3bQw7zFePZ4rGKLlBeTFCfSa',
       '1yZCqXlU9j4OQTkMwYn2qTehnQd9rfows',
@@ -152,7 +152,7 @@ export async function GET(
     }
 
     // ── Group courses (nhiều folder Drive) ──
-    if (courseId.startsWith('khoahoc-group-')) {
+    if (courseId === 'khoahoc-group' || courseId.startsWith('khoahoc-group-')) {
       const group = GROUP_COURSE_FOLDERS[courseId];
       if (!group) return NextResponse.json({ error: 'Group not found' }, { status: 404 });
 
