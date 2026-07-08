@@ -47,15 +47,15 @@ export default function Footer() {
               >
                 <Linkedin className="w-5 h-5" />
               </a>
-              <a
-                href="https://github.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="GitHub"
-                className="p-2 rounded-lg bg-gray-800 hover:bg-cyan-600 transition-colors"
-              >
-                <Github className="w-5 h-5" />
-              </a>
+<a
+  href="https://github.com/ducnb17"
+  target="_blank"
+  rel="noopener noreferrer"
+  aria-label="GitHub"
+  className="p-2 rounded-lg bg-gray-800 hover:bg-cyan-600 transition-colors"
+>
+  <Github className="w-5 h-5" />
+</a>
               <a
                 href="mailto:ducnb17@gmail.com"
                 aria-label="Email"

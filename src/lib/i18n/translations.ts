@@ -5,9 +5,123 @@
 
 export type Locale = 'vi' | 'en' | 'ja';
 
-export const translations = {
+// ── TypeScript Interfaces ──────────────────────────────────────────────────
+
+export interface NavTranslations {
+  home: string;
+  about: string;
+  experience: string;
+  education: string;
+  portfolio: string;
+  blog: string;
+  lms: string;
+  contact: string;
+}
+
+export interface HeroTranslations {
+  title: string;
+  description: string;
+  viewPortfolio: string;
+  contact: string;
+  lmsCourses: string;
+  github: string;
+  githubUrl: string;
+}
+
+export interface AboutTranslations {
+  sectionTitle: string;
+  jobTitle: string;
+  description: string;
+  skills: string;
+  languages: string;
+  skillCategories: {
+    os: string;
+    database: string;
+    programming: string;
+    office: string;
+    security: string;
+  };
+  langVi: string;
+  langJa: string;
+  langEn: string;
+}
+
+export interface ExperienceTranslations {
+  sectionTitle: string;
+  jobs: Array<{
+    title: string;
+    company: string;
+    period: string;
+    description: string;
+  }>;
+}
+
+export interface EducationTranslations {
+  sectionTitle: string;
+  educationLabel: string;
+  certificationsLabel: string;
+  items: Array<{
+    degree: string;
+    school: string;
+    period: string;
+  }>;
+}
+
+export interface PortfolioTranslations {
+  sectionTitle: string;
+  subtitle: string;
+  projects: Array<{
+    title: string;
+    description: string;
+    technologies: string[];
+    link: string;
+  }>;
+}
+
+export interface ContactTranslations {
+  sectionTitle: string;
+  infoTitle: string;
+  infoDesc: string;
+  phone: string;
+  address: string;
+  addressValue: string;
+  email: string;
+  formName: string;
+  formNamePlaceholder: string;
+  formSubject: string;
+  formSubjectPlaceholder: string;
+  formMessage: string;
+  formMessagePlaceholder: string;
+  formSubmit: string;
+  formSuccess: string;
+}
+
+export interface FooterTranslations {
+  contact: string;
+  address: string;
+  addressLine1: string;
+  addressLine2: string;
+  social: string;
+  github: string;
+  githubUrl: string;
+  rights: string;
+}
+
+export interface Translations {
+  nav: NavTranslations;
+  hero: HeroTranslations;
+  about: AboutTranslations;
+  experience: ExperienceTranslations;
+  education: EducationTranslations;
+  portfolio: PortfolioTranslations;
+  contact: ContactTranslations;
+  footer: FooterTranslations;
+}
+
+// ── Translations Dictionary ─────────────────────────────────────────────────
+
+export const translations: Record<Locale, Translations> = {
   vi: {
-    // ── Navbar ──────────────────────────────────────────────────────────────
     nav: {
       home: 'Trang chủ',
       about: 'Giới thiệu',
@@ -18,7 +132,6 @@ export const translations = {
       lms: 'LMS',
       contact: 'Liên hệ',
     },
-    // ── Hero ─────────────────────────────────────────────────────────────────
     hero: {
       title: 'Information Systems Technician',
       description:
@@ -26,8 +139,9 @@ export const translations = {
       viewPortfolio: 'Xem Portfolio',
       contact: 'Liên hệ',
       lmsCourses: 'LMS Khóa học',
+      github: 'GitHub',
+      githubUrl: 'https://github.com/ducnb17',
     },
-    // ── About ─────────────────────────────────────────────────────────────────
     about: {
       sectionTitle: 'Giới thiệu',
       jobTitle: 'Information Systems Technician',
@@ -44,8 +158,8 @@ export const translations = {
       },
       langVi: '🇻🇳 Tiếng Việt (Bản xứ)',
       langJa: '🇯🇵 Tiếng Nhật (Giao tiếp cơ bản/N4)',
+      langEn: '🇬🇧 Tiếng Anh (Giao tiếp cơ bản)',
     },
-    // ── Experience ────────────────────────────────────────────────────────────
     experience: {
       sectionTitle: 'Kinh nghiệm làm việc',
       jobs: [
@@ -72,7 +186,6 @@ export const translations = {
         },
       ],
     },
-    // ── Education ─────────────────────────────────────────────────────────────
     education: {
       sectionTitle: 'Học vấn & Chứng chỉ',
       educationLabel: 'Học vấn',
@@ -90,7 +203,24 @@ export const translations = {
         },
       ],
     },
-    // ── Contact ───────────────────────────────────────────────────────────────
+    portfolio: {
+      sectionTitle: 'Portfolio',
+      subtitle: 'Dự án tiêu biểu',
+      projects: [
+        {
+          title: 'Dự án AI Data Labeling',
+          description: 'Xử lý và gắn nhãn dữ liệu hình ảnh cho mô hình Machine Learning',
+          technologies: ['Python', 'TensorFlow', 'Label Studio'],
+          link: 'https://github.com/ducnb17',
+        },
+        {
+          title: 'Hệ thống quản lý kho',
+          description: 'Phát triển hệ thống quản lý xuất-nhập kho cho doanh nghiệp TMĐT',
+          technologies: ['Java', 'Spring Boot', 'MySQL'],
+          link: 'https://github.com/ducnb17',
+        },
+      ],
+    },
     contact: {
       sectionTitle: 'Liên hệ',
       infoTitle: 'Thông tin liên hệ',
@@ -98,6 +228,7 @@ export const translations = {
       phone: 'Điện thoại',
       address: 'Địa chỉ',
       addressValue: 'Đường Vĩnh Khang, TP. Hà Nội',
+      email: 'Email',
       formName: 'Họ và tên',
       formNamePlaceholder: 'Nguyễn Văn A',
       formSubject: 'Tiêu đề',
@@ -107,18 +238,18 @@ export const translations = {
       formSubmit: 'Gửi tin nhắn',
       formSuccess: 'Cảm ơn bạn đã liên hệ! Tôi sẽ phản hồi sớm nhất có thể.',
     },
-    // ── Footer ────────────────────────────────────────────────────────────────
     footer: {
       contact: 'Liên hệ',
       address: 'Địa chỉ',
       addressLine1: 'Đường Vĩnh Khang',
       addressLine2: 'TP. Hà Nội, Việt Nam',
       social: 'Mạng xã hội',
-      rights: '© 2024 Nguyễn Bá Đức. Tất cả các quyền được bảo lưu.',
+      github: 'GitHub',
+      githubUrl: 'https://github.com/ducnb17',
+      rights: '© 2025 Nguyễn Bá Đức. Tất cả các quyền được bảo lưu.',
     },
   },
 
-  // ════════════════════════════════════════════════════════════════════════════
   en: {
     nav: {
       home: 'Home',
@@ -137,6 +268,8 @@ export const translations = {
       viewPortfolio: 'View Portfolio',
       contact: 'Contact Me',
       lmsCourses: 'LMS Courses',
+      github: 'GitHub',
+      githubUrl: 'https://github.com/ducnb17',
     },
     about: {
       sectionTitle: 'About Me',
@@ -154,6 +287,7 @@ export const translations = {
       },
       langVi: '🇻🇳 Vietnamese (Native)',
       langJa: '🇯🇵 Japanese (Basic / JLPT N4)',
+      langEn: '🇬🇧 English (Basic Communication)',
     },
     experience: {
       sectionTitle: 'Work Experience',
@@ -198,6 +332,24 @@ export const translations = {
         },
       ],
     },
+    portfolio: {
+      sectionTitle: 'Portfolio',
+      subtitle: 'Featured Projects',
+      projects: [
+        {
+          title: 'AI Data Labeling Project',
+          description: 'Image data processing and labeling for Machine Learning models',
+          technologies: ['Python', 'TensorFlow', 'Label Studio'],
+          link: 'https://github.com/ducnb17',
+        },
+        {
+          title: 'Warehouse Management System',
+          description: 'Developed inventory management system for e-commerce business',
+          technologies: ['Java', 'Spring Boot', 'MySQL'],
+          link: 'https://github.com/ducnb17',
+        },
+      ],
+    },
     contact: {
       sectionTitle: 'Contact',
       infoTitle: 'Contact Information',
@@ -205,6 +357,7 @@ export const translations = {
       phone: 'Phone',
       address: 'Address',
       addressValue: 'Vinh Khang Street, Hanoi City',
+      email: 'Email',
       formName: 'Full Name',
       formNamePlaceholder: 'John Doe',
       formSubject: 'Subject',
@@ -220,11 +373,12 @@ export const translations = {
       addressLine1: 'Vinh Khang Street',
       addressLine2: 'Hanoi City, Vietnam',
       social: 'Social Media',
-      rights: '© 2024 Nguyễn Bá Đức. All rights reserved.',
+      github: 'GitHub',
+      githubUrl: 'https://github.com/ducnb17',
+      rights: '© 2025 Nguyễn Bá Đức. All rights reserved.',
     },
   },
 
-  // ════════════════════════════════════════════════════════════════════════════
   ja: {
     nav: {
       home: 'ホーム',
@@ -243,6 +397,8 @@ export const translations = {
       viewPortfolio: 'ポートフォリオを見る',
       contact: 'お問い合わせ',
       lmsCourses: 'LMSコース',
+      github: 'GitHub',
+      githubUrl: 'https://github.com/ducnb17',
     },
     about: {
       sectionTitle: '自己紹介',
@@ -260,6 +416,7 @@ export const translations = {
       },
       langVi: '🇻🇳 ベトナム語（母国語）',
       langJa: '🇯🇵 日本語（日常会話 / JLPT N4）',
+      langEn: '🇬🇧 英語（基本的なコミュニケーション）',
     },
     experience: {
       sectionTitle: '職歴',
@@ -304,6 +461,24 @@ export const translations = {
         },
       ],
     },
+    portfolio: {
+      sectionTitle: 'ポートフォリオ',
+      subtitle: '注目プロジェクト',
+      projects: [
+        {
+          title: 'AIデータラベリングプロジェクト',
+          description: '機械学習モデル向け画像データの処理・ラベリング',
+          technologies: ['Python', 'TensorFlow', 'Label Studio'],
+          link: 'https://github.com/ducnb17',
+        },
+        {
+          title: '倉庫管理システム',
+          description: 'EC企業向け在庫管理システムの開発',
+          technologies: ['Java', 'Spring Boot', 'MySQL'],
+          link: 'https://github.com/ducnb17',
+        },
+      ],
+    },
     contact: {
       sectionTitle: 'お問い合わせ',
       infoTitle: '連絡先情報',
@@ -311,6 +486,7 @@ export const translations = {
       phone: '電話番号',
       address: '住所',
       addressValue: 'ヴィンカン通り、ハノイ市',
+      email: 'メール',
       formName: 'お名前',
       formNamePlaceholder: '山田 太郎',
       formSubject: '件名',
@@ -326,7 +502,9 @@ export const translations = {
       addressLine1: 'ヴィンカン通り',
       addressLine2: 'ハノイ市、ベトナム',
       social: 'ソーシャルメディア',
-      rights: '© 2024 Nguyễn Bá Đức. 全著作権所有。',
+      github: 'GitHub',
+      githubUrl: 'https://github.com/ducnb17',
+      rights: '© 2025 Nguyễn Bá Đức. 全著作権所有。',
     },
   },
 } as const;

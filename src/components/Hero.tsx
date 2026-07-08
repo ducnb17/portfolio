@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { ChevronDown, Mail, ExternalLink } from 'lucide-react';
+import { ChevronDown, Mail, ExternalLink, Github } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 export default function Hero() {
@@ -79,19 +79,28 @@ export default function Hero() {
               <ExternalLink className="w-5 h-5" />
               {t.hero.viewPortfolio}
             </a>
-            <a
-              href="#contact"
-              className="px-8 py-3 border-2 border-cyan-500 text-cyan-600 dark:text-cyan-400 rounded-lg hover:bg-cyan-50 dark:hover:bg-gray-800 transition-all flex items-center gap-2"
-            >
-              <Mail className="w-5 h-5" />
-              {t.hero.contact}
-            </a>
-            <a
-              href="/lms"
-              className="px-8 py-3 bg-gray-800 dark:bg-gray-700 text-white rounded-lg hover:bg-gray-900 dark:hover:bg-gray-600 transition-all flex items-center gap-2"
-            >
-              {t.hero.lmsCourses}
-            </a>
+      <a
+        href="#contact"
+        className="px-8 py-3 border-2 border-cyan-500 text-cyan-600 dark:text-cyan-400 rounded-lg hover:bg-cyan-50 dark:hover:bg-gray-800 transition-all flex items-center gap-2"
+      >
+        <Mail className="w-5 h-5" />
+        {t.hero.contact}
+      </a>
+      <a
+        href="/lms"
+        className="px-8 py-3 bg-gray-800 dark:bg-gray-700 text-white rounded-lg hover:bg-gray-900 dark:hover:bg-gray-600 transition-all flex items-center gap-2"
+      >
+        {t.hero.lmsCourses}
+      </a>
+      <a
+        href={t.hero.githubUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="px-8 py-3 border-2 border-gray-800 dark:border-gray-600 text-gray-800 dark:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-all flex items-center gap-2"
+      >
+        <Github className="w-5 h-5" />
+        {t.hero.github}
+      </a>
           </motion.div>
         </div>
       </div>

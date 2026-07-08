@@ -90,12 +90,15 @@ export default function About() {
                 <span className="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-sm font-medium">
                   {t.about.langVi}
                 </span>
-                <span className="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-sm font-medium">
-                  {t.about.langJa}
-                </span>
-              </div>
-            </div>
-          </motion.div>
+      <span className="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-sm font-medium">
+        {t.about.langJa}
+      </span>
+      <span className="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-sm font-medium">
+        {t.about.langEn}
+      </span>
+    </div>
+  </div>
+</motion.div>
         </div>
       </div>
     </section>

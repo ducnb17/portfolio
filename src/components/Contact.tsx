@@ -43,7 +43,7 @@ export default function Contact() {
                   <Mail className="w-6 h-6 text-cyan-600 dark:text-cyan-400" />
                 </div>
                 <div>
-                  <h4 className="font-bold text-gray-800 dark:text-white">Email</h4>
+      <h4 className="font-bold text-gray-800 dark:text-white">{t.contact.email}</h4>
                   <a
                     href="mailto:ducnb17@gmail.com"
                     className="text-cyan-600 dark:text-cyan-400 hover:underline"
@@ -109,12 +109,12 @@ export default function Contact() {
                 </div>
 
                 <div>
-                  <label
-                    htmlFor="email"
-                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-                  >
-                    Email
-                  </label>
+        <label
+          htmlFor="email"
+          className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+        >
+          {t.contact.email}
+        </label>
                   <input
                     type="email"
                     id="email"

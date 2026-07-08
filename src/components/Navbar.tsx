@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Sun, Moon } from 'lucide-react';
+import { Menu, X, Sun, Moon, Github } from 'lucide-react';
 import { useTheme } from '@/components/ThemeProvider';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
@@ -71,8 +71,19 @@ export default function Navbar() {
               </button>
             ))}
 
-            {/* Language Switcher */}
-            <LanguageSwitcher />
+        {/* GitHub */}
+        <a
+          href={t.hero.githubUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="GitHub"
+          className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+        >
+          <Github className="w-5 h-5" />
+        </a>
+
+        {/* Language Switcher */}
+        <LanguageSwitcher />
 
             {/* Theme Toggle */}
             <button
@@ -88,9 +99,18 @@ export default function Navbar() {
             </button>
           </div>
 
-          {/* Mobile: Language + Theme + Hamburger */}
-          <div className="flex items-center gap-2 md:hidden">
-            <LanguageSwitcher />
+      {/* Mobile: GitHub + Language + Theme + Hamburger */}
+      <div className="flex items-center gap-2 md:hidden">
+        <a
+          href={t.hero.githubUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="GitHub"
+          className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800"
+        >
+          <Github className="w-5 h-5" />
+        </a>
+        <LanguageSwitcher />
             <button
               onClick={toggleTheme}
               className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800"
