@@ -18,11 +18,12 @@ export interface CourseEntry {
 const STATIC_COURSES: CourseEntry[] = [
   // ── Nhóm: Khóa học (giá hời — hiển thị đầu tiên) ──
   {
-    id: 'khoahoc-group',
+    id: 'khoahoc-group-1',
     name: 'Khóa học giá hời',
     mimeType: 'application/vnd.google-apps.folder',
     group: 'courses',
     urls: [
+
       'https://drive.google.com/drive/folders/13AKCXOOp3bQw7zFePZ4rGKLlBeTFCfSa',
       'https://drive.google.com/drive/folders/1yZCqXlU9j4OQTkMwYn2qTehnQd9rfows',
       'https://drive.google.com/drive/folders/1GwuGmZuGk04LuvgwLUl9ahdZ1NW-2xqF',
