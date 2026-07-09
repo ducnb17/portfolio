@@ -17,8 +17,41 @@ export interface DriveItem {
 
 const DRIVE_API = 'https://www.googleapis.com/drive/v3';
 
-// Fields cần lấy khi list file/folder
-const FILE_FIELDS = 'files(id,name,mimeType,modifiedTime,size,thumbnailLink,webViewLink,iconLink)';
+// Fields cần lấy khi list file/folder (kèm nextPageToken để phân trang)
+const FILE_FIELDS = 'nextPageToken,files(id,name,mimeType,modifiedTime,size,thumbnailLink,webViewLink,iconLink)';
+
+/**
+ * Gọi Drive API files.list và tự động lặp qua toàn bộ các trang (nextPageToken)
+ * để không bị mất dữ liệu khi folder có nhiều hơn 1 trang kết quả.
+ */
+async function listAllPages(
+  baseUrl: string,
+  accessToken: string,
+  errorLabel: string
+): Promise<DriveItem[]> {
+  const items: DriveItem[] = [];
+  let pageToken: string | undefined;
+
+  do {
+    const url = pageToken ? `${baseUrl}&pageToken=${encodeURIComponent(pageToken)}` : baseUrl;
+    const res = await fetch(url, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+      // Không cache — luôn lấy dữ liệu mới nhất
+      cache: 'no-store',
+    });
+
+    if (!res.ok) {
+      const err = await res.text();
+      throw new Error(`Drive API ${errorLabel} error (${res.status}): ${err}`);
+    }
+
+    const data = await res.json();
+    items.push(...((data.files ?? []) as DriveItem[]));
+    pageToken = data.nextPageToken;
+  } while (pageToken);
+
+  return items;
+}
 
 /**
  * Liệt kê các thư mục con trực tiếp trong một folder
@@ -31,21 +64,9 @@ export async function listDriveFolders(
   const q = encodeURIComponent(
     `'${folderId}' in parents and mimeType = 'application/vnd.google-apps.folder' and trashed = false`
   );
-  const url = `${DRIVE_API}/files?q=${q}&fields=${FILE_FIELDS}&orderBy=name&pageSize=100`;
+  const url = `${DRIVE_API}/files?q=${q}&fields=${FILE_FIELDS}&orderBy=name&pageSize=1000`;
 
-  const res = await fetch(url, {
-    headers: { Authorization: `Bearer ${accessToken}` },
-    // Không cache — luôn lấy dữ liệu mới nhất
-    cache: 'no-store',
-  });
-
-  if (!res.ok) {
-    const err = await res.text();
-    throw new Error(`Drive API listFolders error (${res.status}): ${err}`);
-  }
-
-  const data = await res.json();
-  return (data.files ?? []) as DriveItem[];
+  return listAllPages(url, accessToken, 'listFolders');
 }
 
 /**
@@ -59,20 +80,9 @@ export async function listDriveFiles(
   const q = encodeURIComponent(
     `'${folderId}' in parents and mimeType != 'application/vnd.google-apps.folder' and trashed = false`
   );
-  const url = `${DRIVE_API}/files?q=${q}&fields=${FILE_FIELDS}&orderBy=name&pageSize=200`;
+  const url = `${DRIVE_API}/files?q=${q}&fields=${FILE_FIELDS}&orderBy=name&pageSize=1000`;
 
-  const res = await fetch(url, {
-    headers: { Authorization: `Bearer ${accessToken}` },
-    cache: 'no-store',
-  });
-
-  if (!res.ok) {
-    const err = await res.text();
-    throw new Error(`Drive API listFiles error (${res.status}): ${err}`);
-  }
-
-  const data = await res.json();
-  return (data.files ?? []) as DriveItem[];
+  return listAllPages(url, accessToken, 'listFiles');
 }
 
 /**
@@ -83,16 +93,15 @@ export async function listDriveContents(
   folderId: string,
   accessToken: string
 ): Promise<{ folders: DriveItem[]; files: DriveItem[]; folderName: string }> {
-  // Lấy tên folder và danh sách con song song
-  const [metaRes, listRes] = await Promise.all([
+  const listUrl = `${DRIVE_API}/files?q=${encodeURIComponent(`'${folderId}' in parents and trashed = false`)}&fields=${FILE_FIELDS}&orderBy=folder,name&pageSize=1000`;
+
+  // Lấy tên folder và danh sách con (toàn bộ các trang) song song
+  const [metaRes, items] = await Promise.all([
     fetch(`${DRIVE_API}/files/${folderId}?fields=id,name`, {
       headers: { Authorization: `Bearer ${accessToken}` },
       cache: 'no-store',
     }),
-    fetch(
-      `${DRIVE_API}/files?q=${encodeURIComponent(`'${folderId}' in parents and trashed = false`)}&fields=${FILE_FIELDS}&orderBy=folder,name&pageSize=200`,
-      { headers: { Authorization: `Bearer ${accessToken}` }, cache: 'no-store' }
-    ),
+    listAllPages(listUrl, accessToken, 'listContents'),
   ]);
 
   // folderName — không throw nếu lỗi, chỉ để trống
@@ -101,14 +110,6 @@ export async function listDriveContents(
     const meta = await metaRes.json();
     folderName = meta.name ?? '';
   }
-
-  if (!listRes.ok) {
-    const err = await listRes.text();
-    throw new Error(`Drive API listContents error (${listRes.status}): ${err}`);
-  }
-
-  const data = await listRes.json();
-  const items: DriveItem[] = data.files ?? [];
 
   return {
     folders: items.filter((i) => i.mimeType === 'application/vnd.google-apps.folder'),
