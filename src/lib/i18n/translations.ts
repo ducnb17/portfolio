@@ -73,8 +73,7 @@ export interface PortfolioTranslations {
   projects: Array<{
     title: string;
     description: string;
-    technologies: string[];
-    link: string;
+    tech: string[];
   }>;
 }
 
@@ -205,22 +204,35 @@ export const translations: Record<Locale, Translations> = {
     },
     portfolio: {
       sectionTitle: 'Portfolio',
-      subtitle: 'Dự án tiêu biểu',
+      subtitle: 'Một số dự án tiêu biểu trong lĩnh vực AI và Cybersecurity',
       projects: [
         {
-          title: 'Dự án AI Data Labeling',
-          description: 'Xử lý và gắn nhãn dữ liệu hình ảnh cho mô hình Machine Learning',
-          technologies: ['Python', 'TensorFlow', 'Label Studio'],
-          link: 'https://github.com/ducnb17',
+          title: 'Data Labeling Pipeline cho mô hình AI',
+          description:
+            'Hệ thống xử lý, phân loại và gắn nhãn dữ liệu hình ảnh chuẩn bị cho training mô hình AI. Tối ưu quy trình làm việc.',
+          tech: ['Python', 'AI/ML', 'Data Processing'],
         },
         {
-          title: 'Hệ thống quản lý kho',
-          description: 'Phát triển hệ thống quản lý xuất-nhập kho cho doanh nghiệp TMĐT',
-          technologies: ['Java', 'Spring Boot', 'MySQL'],
-          link: 'https://github.com/ducnb17',
+          title: 'Hệ thống giám sát bảo mật mạng cơ bản',
+          description:
+            'Giải pháp giám sát và phát hiện sự cố bảo mật mạng cơ bản, ghi log và cảnh báo sự cố bất thường.',
+          tech: ['Cybersecurity', 'Network', 'Monitoring'],
+        },
+        {
+          title: 'Ứng dụng phân loại ảnh bằng Python',
+          description:
+            'Ứng dụng sử dụng deep learning để phân loại ảnh tự động với các model CNN phổ biến.',
+          tech: ['Python', 'TensorFlow', 'Computer Vision'],
+        },
+        {
+          title: 'Quản lý cơ sở dữ liệu - Hệ thống vận hành',
+          description:
+            'Công cụ quản lý và vận hành cơ sở dữ liệu MySQL, tối ưu truy vấn và sao lưu dữ liệu.',
+          tech: ['MySQL', 'Database', 'Backup'],
         },
       ],
     },
+
     contact: {
       sectionTitle: 'Liên hệ',
       infoTitle: 'Thông tin liên hệ',
@@ -334,22 +346,35 @@ export const translations: Record<Locale, Translations> = {
     },
     portfolio: {
       sectionTitle: 'Portfolio',
-      subtitle: 'Featured Projects',
+      subtitle: 'Featured projects in AI and Cybersecurity',
       projects: [
         {
-          title: 'AI Data Labeling Project',
-          description: 'Image data processing and labeling for Machine Learning models',
-          technologies: ['Python', 'TensorFlow', 'Label Studio'],
-          link: 'https://github.com/ducnb17',
+          title: 'Data Labeling Pipeline for AI Models',
+          description:
+            'System for processing, classifying, and labeling image data to prepare it for AI model training. Optimized the workflow.',
+          tech: ['Python', 'AI/ML', 'Data Processing'],
         },
         {
-          title: 'Warehouse Management System',
-          description: 'Developed inventory management system for e-commerce business',
-          technologies: ['Java', 'Spring Boot', 'MySQL'],
-          link: 'https://github.com/ducnb17',
+          title: 'Basic Network Security Monitoring System',
+          description:
+            'Basic network security monitoring and incident detection solution with logging and anomaly alerts.',
+          tech: ['Cybersecurity', 'Network', 'Monitoring'],
+        },
+        {
+          title: 'Image Classification App with Python',
+          description:
+            'Application using deep learning for automatic image classification with popular CNN models.',
+          tech: ['Python', 'TensorFlow', 'Computer Vision'],
+        },
+        {
+          title: 'Database Management - Operations System',
+          description:
+            'Tool for managing and operating MySQL databases, optimizing queries and data backups.',
+          tech: ['MySQL', 'Database', 'Backup'],
         },
       ],
     },
+
     contact: {
       sectionTitle: 'Contact',
       infoTitle: 'Contact Information',
@@ -463,22 +488,35 @@ export const translations: Record<Locale, Translations> = {
     },
     portfolio: {
       sectionTitle: 'ポートフォリオ',
-      subtitle: '注目プロジェクト',
+      subtitle: 'AIおよびサイバーセキュリティ分野の代表的なプロジェクト',
       projects: [
         {
-          title: 'AIデータラベリングプロジェクト',
-          description: '機械学習モデル向け画像データの処理・ラベリング',
-          technologies: ['Python', 'TensorFlow', 'Label Studio'],
-          link: 'https://github.com/ducnb17',
+          title: 'AIモデル向けデータラベリングパイプライン',
+          description:
+            'AIモデルのトレーニングに向けて画像データを処理・分類・ラベリングするシステム。ワークフローを最適化。',
+          tech: ['Python', 'AI/ML', 'Data Processing'],
         },
         {
-          title: '倉庫管理システム',
-          description: 'EC企業向け在庫管理システムの開発',
-          technologies: ['Java', 'Spring Boot', 'MySQL'],
-          link: 'https://github.com/ducnb17',
+          title: '基本的なネットワークセキュリティ監視システム',
+          description:
+            '基本的なネットワークセキュリティの監視・インシデント検出ソリューション。ログ記録と異常アラート機能付き。',
+          tech: ['Cybersecurity', 'Network', 'Monitoring'],
+        },
+        {
+          title: 'Pythonによる画像分類アプリケーション',
+          description:
+            '一般的なCNNモデルを用いたディープラーニングによる自動画像分類アプリケーション。',
+          tech: ['Python', 'TensorFlow', 'Computer Vision'],
+        },
+        {
+          title: 'データベース管理 - 運用システム',
+          description:
+            'MySQLデータベースの管理・運用ツール。クエリの最適化とデータバックアップに対応。',
+          tech: ['MySQL', 'Database', 'Backup'],
         },
       ],
     },
+
     contact: {
       sectionTitle: 'お問い合わせ',
       infoTitle: '連絡先情報',
