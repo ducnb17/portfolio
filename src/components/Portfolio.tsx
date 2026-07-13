@@ -1,14 +1,15 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Github, Server, Camera, Wifi } from 'lucide-react';
+import { Github, Server, Camera, Wifi, Database } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 // Icon cố định theo thứ tự project (không đổi theo ngôn ngữ)
 // Project 1: Docker/AI Local → Server
 // Project 2: Synology NAS/Camera → Camera
 // Project 3: Home Lab/Networking → Wifi
-const ICONS = [Server, Camera, Wifi];
+// Project 4: Database Management → Database
+const ICONS = [Server, Camera, Wifi, Database];
 
 export default function Portfolio() {
   const { t } = useLanguage();
@@ -58,7 +59,7 @@ export default function Portfolio() {
                     ))}
                   </div>
                   <div className="flex gap-3">
-                    {/* TODO: Thay href="#" bằng link GitHub thật khi có */}
+                    {/* TODO: Thay href#" bằng link GitHub thật khi có */}
                     <a
                       href="#"
                       className="flex-1 px-4 py-2 bg-gray-800 dark:bg-gray-700 text-white text-center rounded-lg hover:bg-gray-900 dark:hover:bg-gray-600 transition-colors flex items-center justify-center gap-2"

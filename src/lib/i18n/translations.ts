@@ -224,6 +224,12 @@ export const translations: Record<Locale, Translations> = {
             'Tự thiết kế và xử lý sự cố hạ tầng mạng gia đình, bao gồm bài toán giải nhiệt cho modem/router quá tải nhiệt gây nghẽn mạng, tối ưu hiệu năng đường truyền.',
           tech: ['Networking', 'Troubleshooting', 'Home Lab'],
         },
+        {
+          title: 'Quản lý cơ sở dữ liệu - Hệ thống vận hành',
+          description:
+            'Công cụ quản lý và vận hành cơ sở dữ liệu MySQL, tối ưu truy vấn và sao lưu dữ liệu.',
+          tech: ['MySQL', 'Database', 'Backup'],
+        },
       ],
     },
 
@@ -360,6 +366,12 @@ export const translations: Record<Locale, Translations> = {
             'Self-designed and troubleshot home network infrastructure, including thermal management for overheating modem/router causing network congestion, and optimized throughput performance.',
           tech: ['Networking', 'Troubleshooting', 'Home Lab'],
         },
+        {
+          title: 'Database Management - Operations System',
+          description:
+            'Tool for managing and operating MySQL databases, optimizing queries and data backups.',
+          tech: ['MySQL', 'Database', 'Backup'],
+        },
       ],
     },
 
@@ -495,6 +507,12 @@ export const translations: Record<Locale, Translations> = {
           description:
             '家庭用ネットワークインフラを自己設計・トラブルシューティング。モデム/ルーターの過熱による通信障害の冷却対策と、スループット性能の最適化を実施。',
           tech: ['Networking', 'Troubleshooting', 'Home Lab'],
+        },
+        {
+          title: 'データベース管理 - 運用システム',
+          description:
+            'MySQLデータベースの管理・運用ツール。クエリの最適化とデータバックアップに対応。',
+          tech: ['MySQL', 'Database', 'Backup'],
         },
       ],
     },
