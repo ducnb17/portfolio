@@ -204,31 +204,25 @@ export const translations: Record<Locale, Translations> = {
     },
     portfolio: {
       sectionTitle: 'Portfolio',
-      subtitle: 'Một số dự án tiêu biểu trong lĩnh vực AI và Cybersecurity',
+      subtitle: 'Một số dự án tiêu biểu trong lĩnh vực AI và hạ tầng hệ thống',
       projects: [
         {
-          title: 'Data Labeling Pipeline cho mô hình AI',
+          title: 'Triển khai mô hình AI Local (Ollama) trên Docker',
           description:
-            'Hệ thống xử lý, phân loại và gắn nhãn dữ liệu hình ảnh chuẩn bị cho training mô hình AI. Tối ưu quy trình làm việc.',
-          tech: ['Python', 'AI/ML', 'Data Processing'],
+            'Tự cấu hình Docker và Ollama để chạy các mô hình ngôn ngữ lớn (LLM) trên máy cá nhân. Xử lý bài toán tối ưu VRAM để tránh tràn bộ nhớ khi chạy mô hình trên GPU phổ thông (RTX 3060).',
+          tech: ['Docker', 'Ollama', 'AI Local'],
         },
         {
-          title: 'Hệ thống giám sát bảo mật mạng cơ bản',
+          title: 'Giải pháp lưu trữ và giám sát Camera qua Synology NAS',
           description:
-            'Giải pháp giám sát và phát hiện sự cố bảo mật mạng cơ bản, ghi log và cảnh báo sự cố bất thường.',
-          tech: ['Cybersecurity', 'Network', 'Monitoring'],
+            'Cấu hình hệ thống NAS Synology, tích hợp và quản lý luồng dữ liệu từ camera an ninh, thiết lập phân quyền truy cập và lưu trữ dữ liệu an toàn.',
+          tech: ['Synology NAS', 'Surveillance', 'Storage'],
         },
         {
-          title: 'Ứng dụng phân loại ảnh bằng Python',
+          title: 'Thiết kế và tối ưu hạ tầng mạng nội bộ (Home Lab)',
           description:
-            'Ứng dụng sử dụng deep learning để phân loại ảnh tự động với các model CNN phổ biến.',
-          tech: ['Python', 'TensorFlow', 'Computer Vision'],
-        },
-        {
-          title: 'Quản lý cơ sở dữ liệu - Hệ thống vận hành',
-          description:
-            'Công cụ quản lý và vận hành cơ sở dữ liệu MySQL, tối ưu truy vấn và sao lưu dữ liệu.',
-          tech: ['MySQL', 'Database', 'Backup'],
+            'Tự thiết kế và xử lý sự cố hạ tầng mạng gia đình, bao gồm bài toán giải nhiệt cho modem/router quá tải nhiệt gây nghẽn mạng, tối ưu hiệu năng đường truyền.',
+          tech: ['Networking', 'Troubleshooting', 'Home Lab'],
         },
       ],
     },
@@ -346,31 +340,25 @@ export const translations: Record<Locale, Translations> = {
     },
     portfolio: {
       sectionTitle: 'Portfolio',
-      subtitle: 'Featured projects in AI and Cybersecurity',
+      subtitle: 'Featured projects in AI and system infrastructure',
       projects: [
         {
-          title: 'Data Labeling Pipeline for AI Models',
+          title: 'Local AI Model Deployment (Ollama) on Docker',
           description:
-            'System for processing, classifying, and labeling image data to prepare it for AI model training. Optimized the workflow.',
-          tech: ['Python', 'AI/ML', 'Data Processing'],
+            'Self-configured Docker and Ollama to run large language models (LLM) on a personal machine. Solved VRAM optimization to prevent out-of-memory errors when running models on a consumer GPU (RTX 3060).',
+          tech: ['Docker', 'Ollama', 'AI Local'],
         },
         {
-          title: 'Basic Network Security Monitoring System',
+          title: 'Camera Storage & Monitoring via Synology NAS',
           description:
-            'Basic network security monitoring and incident detection solution with logging and anomaly alerts.',
-          tech: ['Cybersecurity', 'Network', 'Monitoring'],
+            'Configured a Synology NAS system, integrated and managed data streams from security cameras, set up access control and secure data storage.',
+          tech: ['Synology NAS', 'Surveillance', 'Storage'],
         },
         {
-          title: 'Image Classification App with Python',
+          title: 'Home Lab Network Infrastructure Design & Optimization',
           description:
-            'Application using deep learning for automatic image classification with popular CNN models.',
-          tech: ['Python', 'TensorFlow', 'Computer Vision'],
-        },
-        {
-          title: 'Database Management - Operations System',
-          description:
-            'Tool for managing and operating MySQL databases, optimizing queries and data backups.',
-          tech: ['MySQL', 'Database', 'Backup'],
+            'Self-designed and troubleshot home network infrastructure, including thermal management for overheating modem/router causing network congestion, and optimized throughput performance.',
+          tech: ['Networking', 'Troubleshooting', 'Home Lab'],
         },
       ],
     },
@@ -488,31 +476,25 @@ export const translations: Record<Locale, Translations> = {
     },
     portfolio: {
       sectionTitle: 'ポートフォリオ',
-      subtitle: 'AIおよびサイバーセキュリティ分野の代表的なプロジェクト',
+      subtitle: 'AIおよびシステムインフラ分野の代表的なプロジェクト',
       projects: [
         {
-          title: 'AIモデル向けデータラベリングパイプライン',
+          title: 'DockerでのローカルAIモデル（Ollama）デプロイ',
           description:
-            'AIモデルのトレーニングに向けて画像データを処理・分類・ラベリングするシステム。ワークフローを最適化。',
-          tech: ['Python', 'AI/ML', 'Data Processing'],
+            'DockerとOllamaを自己設定し、個人のマシンで大規模言語モデル（LLM）を実行。一般向けGPU（RTX 3060）でのモデル実行時のVRAMオーバーフロー防止のための最適化を実施。',
+          tech: ['Docker', 'Ollama', 'AI Local'],
         },
         {
-          title: '基本的なネットワークセキュリティ監視システム',
+          title: 'Synology NASによるカメラ録画・監視システム',
           description:
-            '基本的なネットワークセキュリティの監視・インシデント検出ソリューション。ログ記録と異常アラート機能付き。',
-          tech: ['Cybersecurity', 'Network', 'Monitoring'],
+            'Synology NASシステムを構築し、防犯カメラからのデータストリームを統合・管理。アクセス権限の設定と安全なデータストレージを実現。',
+          tech: ['Synology NAS', 'Surveillance', 'Storage'],
         },
         {
-          title: 'Pythonによる画像分類アプリケーション',
+          title: 'ホームラボネットワークインフラの設計・最適化',
           description:
-            '一般的なCNNモデルを用いたディープラーニングによる自動画像分類アプリケーション。',
-          tech: ['Python', 'TensorFlow', 'Computer Vision'],
-        },
-        {
-          title: 'データベース管理 - 運用システム',
-          description:
-            'MySQLデータベースの管理・運用ツール。クエリの最適化とデータバックアップに対応。',
-          tech: ['MySQL', 'Database', 'Backup'],
+            '家庭用ネットワークインフラを自己設計・トラブルシューティング。モデム/ルーターの過熱による通信障害の冷却対策と、スループット性能の最適化を実施。',
+          tech: ['Networking', 'Troubleshooting', 'Home Lab'],
         },
       ],
     },
