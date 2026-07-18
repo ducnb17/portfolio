@@ -39,6 +39,7 @@ const STATIC_COURSES: CourseEntry[] = [
   { id: '1PRvUEg9jNfDalRGwiwduPXNlRjp1aEgd', name: '3.17 Khóa Bát Trạch - Thầy Cường', mimeType: 'application/vnd.google-apps.folder', group: 'huyen-hoc' },
   { id: '1Yb_KhgwG2O3_zksCFeb8d-18rwA451eo', name: '3.03 Khóa Phong Thủy Tam Hợp Phái Minh Việt - Thầy Cường', mimeType: 'application/vnd.google-apps.folder', group: 'huyen-hoc' },
   { id: '1gGDG_Z0Yk6H0E85xHyupZ7NIKIrkuvM2', name: '3.01 Khóa HKDQ Minh Việt - Thầy Cường', mimeType: 'application/vnd.google-apps.folder', group: 'huyen-hoc' },
+  { id: '1x26EVXzXMArIoXmem_ayySQv_2J_V46j', name: '2.01 Khóa Bát Tự Mạnh Phái Sơ Cấp - Thầy Đoàn', mimeType: 'application/vnd.google-apps.folder', group: 'huyen-hoc' },
   { id: '1XaE1ZqCr6Mi648PYG1NB76VluhznjOaA', name: '2.08 Khóa Bát Tự Tứ Trụ K1 Tam Nguyên', mimeType: 'application/vnd.google-apps.folder', group: 'huyen-hoc' },
   { id: '1SFMRgIEMiVOdrlK-KqhyZPrE5wyCsUYh', name: '2.12 Khóa Bát Tự Cơ Bản - Thầy Cường', mimeType: 'application/vnd.google-apps.folder', group: 'huyen-hoc' },
   { id: '1Fi0iPalj9u-_4euRRHZO5b5fkupi4KsN', name: '1.18 Khóa Tử Vi NP 33 Video - Thầy Cường', mimeType: 'application/vnd.google-apps.folder', group: 'huyen-hoc' },
@@ -59,7 +60,7 @@ const STATIC_COURSES: CourseEntry[] = [
 
   // ── Các khóa bổ sung ──
   { id: '1LMNdG5DDPp1mW403bgLU24oIW7c89Bxh', name: '1.27 Khâm Thiên Tứ Hóa Phái - Chiến Nguyễn (17 Video)', mimeType: 'application/vnd.google-apps.folder', group: 'huyen-hoc' },
-  { id: '1rmO1MvNP7Ti1PFpZFCeszllBZo6UBpH', name: '2.09 Khóa Master Bát Tự - Nguyễn Dũng', mimeType: 'application/vnd.google-apps.folder', group: 'huyen-hoc' },
+  { id: '1rmO1MvNP7Tif1PFpZFCeszllBZo6UBpH', name: '2.09 Khóa Master Bát Tự - Nguyễn Dũng', mimeType: 'application/vnd.google-apps.folder', group: 'huyen-hoc' },
   { id: '19ghqBqRZxHc0nhgWXzanNyjks29i1jh5', name: '5.02 Khóa Kỳ Môn Độn Giáp Cơ Bản - Thầy Dũng', mimeType: 'application/vnd.google-apps.folder', group: 'huyen-hoc' },
 ];
 
