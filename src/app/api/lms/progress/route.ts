@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/lib/authOptions';
-import { isAllowedEmail } from '@/lib/auth';
+import { canAccessLms } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 
 export const dynamic = 'force-dynamic';
@@ -10,7 +10,7 @@ async function getUser() {
   const session = await getServerSession(authOptions);
   const email = session?.user?.email;
   if (!email) return { response: NextResponse.json({ error: 'Unauthorized' }, { status: 401 }) };
-  if (!isAllowedEmail(email)) return { response: NextResponse.json({ error: 'Forbidden' }, { status: 403 }) };
+  if (!(await canAccessLms(email))) return { response: NextResponse.json({ error: 'Forbidden' }, { status: 403 }) };
   const user = await prisma.user.findUnique({ where: { email } });
   if (!user) return { response: NextResponse.json({ error: 'User not found' }, { status: 401 }) };
   return { user };

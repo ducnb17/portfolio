@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/lib/authOptions';
-import { isAllowedEmail } from '@/lib/auth';
+import { canAccessLms } from '@/lib/auth';
 import { listDriveFolders } from '@/lib/drive';
 import { isAdminEmail } from '@/lib/admin';
 import { prisma } from '@/lib/prisma';
@@ -13,6 +13,7 @@ export interface CourseEntry {
   name: string;
   mimeType: string;
   group: 'courses' | 'huyen-hoc'; // nhóm hiển thị
+  isCustom?: boolean;
   urls?: string[]; // link Google Drive bổ sung (nếu có nhiều folder)
 }
 
@@ -72,7 +73,7 @@ export async function GET() {
     if (!session?.user?.email) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-    if (!isAllowedEmail(session.user.email)) {
+    if (!(await canAccessLms(session.user.email))) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
@@ -84,6 +85,7 @@ export async function GET() {
       mimeType: 'application/vnd.google-apps.folder',
       group: course.group === 'courses' ? 'courses' : 'huyen-hoc',
       urls: [course.url],
+      isCustom: true,
     }));
     const sorted = [
       ...STATIC_COURSES.filter(c => c.group === 'courses'),
@@ -96,6 +98,62 @@ export async function GET() {
   } catch (error) {
     console.error('Error fetching courses:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+  }
+}
+
+export async function PUT(req: Request) {
+  try {
+    const session = await getServerSession(authOptions);
+    if (!session?.user?.email || !isAdminEmail(session.user.email)) {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    }
+    const body = await req.json() as { id?: string; name?: string; url?: string; group?: 'courses' | 'huyen-hoc' };
+    if (!body.id || !body.name?.trim() || !body.url?.trim()) {
+      return NextResponse.json({ error: 'id, name and url are required' }, { status: 400 });
+    }
+    const name = body.name.trim();
+    const url = body.url.trim();
+    const match = url.match(/folders\/([a-zA-Z0-9_-]+)/);
+    if (!match) return NextResponse.json({ error: 'URL must be a Google Drive folder link' }, { status: 400 });
+    const nextDriveId = match[1];
+    const course = await prisma.$transaction(async (tx) => {
+      const updated = await tx.lmsCourse.update({
+        where: { driveId: body.id },
+        data: {
+          driveId: nextDriveId,
+          name,
+          url,
+          group: body.group === 'courses' ? 'courses' : 'huyen-hoc',
+        },
+      });
+      if (nextDriveId !== body.id) {
+        await tx.lessonProgress.updateMany({
+          where: { courseId: body.id },
+          data: { courseId: nextDriveId },
+        });
+      }
+      return updated;
+    });
+    return NextResponse.json({ ok: true, course });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Unable to update course';
+    return NextResponse.json({ error: message }, { status: 400 });
+  }
+}
+
+export async function DELETE(req: Request) {
+  try {
+    const session = await getServerSession(authOptions);
+    if (!session?.user?.email || !isAdminEmail(session.user.email)) {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    }
+    const body = await req.json() as { id?: string };
+    if (!body.id) return NextResponse.json({ error: 'id is required' }, { status: 400 });
+    await prisma.lmsCourse.delete({ where: { driveId: body.id } });
+    await prisma.lessonProgress.deleteMany({ where: { courseId: body.id } });
+    return NextResponse.json({ ok: true });
+  } catch {
+    return NextResponse.json({ error: 'Course not found or cannot be deleted' }, { status: 404 });
   }
 }
 

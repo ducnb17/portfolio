@@ -59,32 +59,12 @@ export async function POST(request: Request) {
     }
 
     // 3. Kiểm tra loại file được phép upload
-    const allowedTypes = [
-      'video/mp4', 'video/webm', 'video/mkv', 'video/avi', 'video/mov',
-      'application/pdf',
-      'application/msword',
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-      'application/vnd.ms-powerpoint',
-      'application/vnd.openxmlformats-officedocument.presentationml.presentation',
-      'application/vnd.ms-excel',
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-      'image/jpeg', 'image/png', 'image/gif', 'image/webp',
-      'text/plain', 'text/markdown',
-      'application/zip',
-    ];
-
-    if (!allowedTypes.includes(file.type)) {
-      return NextResponse.json(
-        { error: `Loại file không được hỗ trợ: ${file.type}` },
-        { status: 400 }
-      );
-    }
-
-    // Kiểm tra kích thước file (max 100MB)
-    const MAX_SIZE = 100 * 1024 * 1024;
+    // Every MIME type is accepted: video, audio, images, archives, ISO and documents.
+    // Browsers/Google Drive decide whether a particular format can be previewed.
+    const MAX_SIZE = Number(process.env.LMS_MAX_UPLOAD_BYTES || 500 * 1024 * 1024);
     if (file.size > MAX_SIZE) {
       return NextResponse.json(
-        { error: 'File quá lớn. Giới hạn tối đa là 100MB.' },
+        { error: `File is too large. Maximum upload size is ${Math.floor(MAX_SIZE / 1024 / 1024)} MB.` },
         { status: 400 }
       );
     }
@@ -96,7 +76,7 @@ export async function POST(request: Request) {
     const uploaded = await uploadFileToDrive(
       folderId,
       file.name,
-      file.type,
+      file.type || 'application/octet-stream',
       buffer,
       accessToken
     );

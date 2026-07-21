@@ -1,7 +1,7 @@
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import type { NextAuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
-import { allowedEmails } from '@/lib/auth';
+import { canAccessLms } from '@/lib/auth';
 import { isAdminEmail } from '@/lib/admin';
 import { prisma } from '@/lib/prisma';
 
@@ -36,7 +36,7 @@ export const authOptions: NextAuthOptions = {
     },
     async signIn({ user }) {
       const email = user.email ?? '';
-      if (!allowedEmails.includes(email.toLowerCase())) return '/lms?error=AccessDenied';
+      if (!(await canAccessLms(email))) return '/lms?error=AccessDenied';
       return true;
     },
   },
