@@ -47,42 +47,6 @@ body {
   background: #22d3ee;
 }
 
-/* The visible scrollbar doubles as a clear progress indicator for the looping carousel. */
-.project-carousel {
-  --project-card-half-width: 9.5rem;
-  padding-inline: max(0.5rem, calc(50% - var(--project-card-half-width)));
-  scroll-padding-inline: max(0.5rem, calc(50% - var(--project-card-half-width)));
-  scrollbar-color: #06b6d4 #cbd5e1;
-  scrollbar-width: thin;
-}
-
-.project-carousel::-webkit-scrollbar {
-  height: 9px;
-}
-
-.project-carousel::-webkit-scrollbar-track {
-  background: #e2e8f0;
-  border-radius: 999px;
-}
-
-.project-carousel::-webkit-scrollbar-thumb {
-  background: linear-gradient(90deg, #06b6d4, #2563eb);
-  border: 2px solid #e2e8f0;
-  border-radius: 999px;
-}
-
-.dark .project-carousel {
-  scrollbar-color: #22d3ee #334155;
-}
-
-.dark .project-carousel::-webkit-scrollbar-track {
-  background: #334155;
-}
-
-.dark .project-carousel::-webkit-scrollbar-thumb {
-  border-color: #334155;
-}
-
 /* Utility animations */
 .animate-fade-in {
   animation: fadeIn 0.6s ease-out;
