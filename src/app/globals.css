@@ -49,6 +49,9 @@ body {
 
 /* The visible scrollbar doubles as a clear progress indicator for the looping carousel. */
 .project-carousel {
+  --project-card-half-width: 9.5rem;
+  padding-inline: max(0.5rem, calc(50% - var(--project-card-half-width)));
+  scroll-padding-inline: max(0.5rem, calc(50% - var(--project-card-half-width)));
   scrollbar-color: #06b6d4 #cbd5e1;
   scrollbar-width: thin;
 }
