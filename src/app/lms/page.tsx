@@ -59,7 +59,7 @@ async function resetCourse(courseId: string) {
 }
 
 // ─── Upload Panel ─────────────────────────────────────────────────────────────
-function UploadPanel({ targetFolderId, onUploaded }: { targetFolderId: string; onUploaded: () => void }) {
+function UploadPanel({ targetFolderId, courseId, onUploaded }: { targetFolderId: string; courseId: string; onUploaded: () => void }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
   const [msg, setMsg] = useState<{ type: 'ok' | 'err'; text: string } | null>(null);
@@ -71,6 +71,7 @@ function UploadPanel({ targetFolderId, onUploaded }: { targetFolderId: string; o
     const fd = new FormData();
     fd.append('file', file);
     fd.append('folderId', targetFolderId);
+    fd.append('courseId', courseId);
     try {
       const r = await fetch('/api/lms/upload', { method: 'POST', body: fd });
       const data = await r.json();
@@ -102,6 +103,7 @@ function UploadPanel({ targetFolderId, onUploaded }: { targetFolderId: string; o
 // ─── Main Page ────────────────────────────────────────────────────────────────
 export default function LMSPage() {
   const { data: session, status } = useSession();
+  const isAdmin = (session?.user as { isAdmin?: boolean } | undefined)?.isAdmin === true;
   const [courses, setCourses]           = useState<Course[]>([]);
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
   const [detail, setDetail]             = useState<CourseDetail | null>(null);
@@ -291,7 +293,7 @@ export default function LMSPage() {
           <div className="p-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
             <h2 className="font-semibold text-gray-700 dark:text-gray-300 text-xs uppercase tracking-wider">Danh sách khóa học</h2>
             <button onClick={() => { setShowAddCourse(v => !v); setAddMsg(null); }} title="Thêm khóa học"
-              className="p-1 rounded-lg text-gray-400 hover:text-cyan-500 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+              className={`${isAdmin ? '' : 'hidden '}p-1 rounded-lg text-gray-400 hover:text-cyan-500 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors`}>
               {showAddCourse ? <X className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
             </button>
           </div>
@@ -447,7 +449,7 @@ export default function LMSPage() {
                                   <p className="px-3 py-2 text-xs text-gray-400 italic">Chưa có bài học</p>
                                 )}
                                 {/* Upload button — chỉ khi có Drive thực (không phải mock) */}
-                                {!selectedCourse.id.startsWith('mock-') && (
+                                {isAdmin && !selectedCourse.id.startsWith('mock-') && (
                                   <div>
                                     <button onClick={() => setShowUpload(showUpload === ch.id ? null : ch.id)}
                                       className="mt-1 mx-3 flex items-center gap-1 text-xs text-gray-400 hover:text-cyan-500 transition-colors">
@@ -455,7 +457,7 @@ export default function LMSPage() {
                                     </button>
                                     {showUpload === ch.id && (
                                       <div className="mx-3">
-                                        <UploadPanel targetFolderId={ch.id} onUploaded={() => { openCourse(selectedCourse); setShowUpload(null); }} />
+                                        <UploadPanel targetFolderId={ch.id} courseId={selectedCourse.id} onUploaded={() => { openCourse(selectedCourse); setShowUpload(null); }} />
                                       </div>
                                     )}
                                   </div>

@@ -3,6 +3,8 @@ import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/lib/authOptions';
 import { isAllowedEmail } from '@/lib/auth';
 import { listDriveFolders } from '@/lib/drive';
+import { isAdminEmail } from '@/lib/admin';
+import { prisma } from '@/lib/prisma';
 
 export const dynamic = 'force-dynamic';
 
@@ -75,9 +77,19 @@ export async function GET() {
     }
 
     // Sắp xếp nhóm huyen-hoc theo tên
+    const customCourses = await prisma.lmsCourse.findMany({ orderBy: { createdAt: 'asc' } });
+    const dbCourses: CourseEntry[] = customCourses.map((course) => ({
+      id: course.driveId,
+      name: course.name,
+      mimeType: 'application/vnd.google-apps.folder',
+      group: course.group === 'courses' ? 'courses' : 'huyen-hoc',
+      urls: [course.url],
+    }));
     const sorted = [
       ...STATIC_COURSES.filter(c => c.group === 'courses'),
-      ...STATIC_COURSES.filter(c => c.group === 'huyen-hoc').sort((a, b) => a.name.localeCompare(b.name, 'vi')),
+      ...dbCourses.filter(c => c.group === 'courses'),
+      ...[...STATIC_COURSES.filter(c => c.group === 'huyen-hoc'), ...dbCourses.filter(c => c.group === 'huyen-hoc')]
+        .sort((a, b) => a.name.localeCompare(b.name, 'vi')),
     ];
 
     return NextResponse.json(sorted);
@@ -91,7 +103,7 @@ export async function GET() {
 export async function POST(req: Request) {
   try {
     const session = await getServerSession(authOptions);
-    if (!session?.user?.email || !isAllowedEmail(session.user.email)) {
+    if (!session?.user?.email || !isAdminEmail(session.user.email)) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
     const body = await req.json();
@@ -102,7 +114,8 @@ export async function POST(req: Request) {
 
     // Trích ID từ URL Drive
     const match = url.match(/folders\/([a-zA-Z0-9_-]+)/);
-    const id = match ? match[1] : `custom-${Date.now()}`;
+    if (!match) return NextResponse.json({ error: 'URL must be a Google Drive folder link' }, { status: 400 });
+    const id = match[1];
 
     const newEntry: CourseEntry = {
       id, name,
@@ -111,21 +124,13 @@ export async function POST(req: Request) {
       urls: [url],
     };
 
-    // Đọc file custom nếu có, append, ghi lại
-    const fs = await import('fs/promises');
-    const path = await import('path');
-    const filePath = path.join(process.cwd(), 'data', 'custom-courses.json');
-    let existing: CourseEntry[] = [];
-    try {
-      const raw = await fs.readFile(filePath, 'utf-8');
-      existing = JSON.parse(raw);
-    } catch { /* file chưa tồn tại */ }
-
-    existing.push(newEntry);
-    await fs.mkdir(path.join(process.cwd(), 'data'), { recursive: true });
-    await fs.writeFile(filePath, JSON.stringify(existing, null, 2), 'utf-8');
-
+    await prisma.lmsCourse.upsert({
+      where: { driveId: id },
+      create: { driveId: id, name, url, group: newEntry.group },
+      update: { name, url, group: newEntry.group },
+    });
     return NextResponse.json({ success: true, course: newEntry });
+
   } catch (error) {
     console.error('POST courses error:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });

@@ -16,8 +16,10 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/lib/authOptions';
-import { isAllowedEmail } from '@/lib/auth';
 import { uploadFileToDrive } from '@/lib/drive';
+import { isAdminEmail } from '@/lib/admin';
+import { getGoogleAccessToken } from '@/lib/google';
+import { prisma } from '@/lib/prisma';
 
 export const dynamic = 'force-dynamic';
 
@@ -31,17 +33,11 @@ export async function POST(request: Request) {
     if (!session?.user?.email) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-    if (!isAllowedEmail(session.user.email)) {
+    if (!isAdminEmail(session.user.email)) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
-    const accessToken = (session as any).accessToken as string;
-    if (!accessToken) {
-      return NextResponse.json(
-        { error: 'Không có access token — vui lòng đăng nhập lại' },
-        { status: 401 }
-      );
-    }
+    const accessToken = await getGoogleAccessToken(session.user.email);
 
     // 2. Parse multipart form
     let formData: FormData;
@@ -53,6 +49,7 @@ export async function POST(request: Request) {
 
     const file = formData.get('file') as File | null;
     const folderId = formData.get('folderId') as string | null;
+    const courseId = formData.get('courseId') as string | null;
 
     if (!file) {
       return NextResponse.json({ error: 'Thiếu file' }, { status: 400 });
@@ -103,6 +100,30 @@ export async function POST(request: Request) {
       buffer,
       accessToken
     );
+
+    const user = await prisma.user.findUnique({ where: { email: session.user.email } });
+    if (!user) return NextResponse.json({ error: 'User not found' }, { status: 401 });
+    await prisma.uploadedMedia.upsert({
+      where: { driveFileId: uploaded.id },
+      create: {
+        driveFileId: uploaded.id,
+        courseId: courseId || null,
+        folderId,
+        fileName: uploaded.name,
+        mimeType: uploaded.mimeType,
+        sizeBytes: BigInt(uploaded.size ?? file.size),
+        driveViewUrl: uploaded.webViewLink ?? null,
+        uploadedById: user.id,
+      },
+      update: {
+        courseId: courseId || null,
+        folderId,
+        fileName: uploaded.name,
+        mimeType: uploaded.mimeType,
+        sizeBytes: BigInt(uploaded.size ?? file.size),
+        driveViewUrl: uploaded.webViewLink ?? null,
+      },
+    });
 
     return NextResponse.json({
       ok: true,

@@ -13,6 +13,7 @@ import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/lib/authOptions';
 import { isAllowedEmail } from '@/lib/auth';
 import { listDriveContents, DriveItem } from '@/lib/drive';
+import { getGoogleAccessToken } from '@/lib/google';
 
 export const dynamic = 'force-dynamic';
 
@@ -141,7 +142,7 @@ export async function GET(
     }
 
     const { courseId } = params;
-    const accessToken = (session as any).accessToken as string;
+    const accessToken = await getGoogleAccessToken(session.user.email);
 
     // ── Mock data ──
     if (courseId.startsWith('mock-')) {
