@@ -1,7 +1,6 @@
 'use client';
 
 import { useCallback, useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
 import { ArrowLeft, ArrowRight, Github, Headphones, Search, Server, Network } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 
@@ -14,6 +13,7 @@ export default function Portfolio() {
   const trackRef = useRef<HTMLDivElement>(null);
   const initializedRef = useRef(false);
   const mouseDragRef = useRef({ active: false, startX: 0, startScrollLeft: 0 });
+  const autoScrollRef = useRef({ frameId: 0, lastTime: 0, paused: false });
 
   const labels = {
     previous: locale === 'vi' ? 'Dự án trước' : locale === 'ja' ? '前のプロジェクト' : 'Previous project',
@@ -55,15 +55,28 @@ export default function Portfolio() {
   }, [projects.length]);
 
   useEffect(() => {
-    const timer = window.setInterval(() => {
-      if (!document.hidden) move(1);
-    }, 4800);
-    return () => window.clearInterval(timer);
-  }, [move]);
+    const autoScroll = (time: number) => {
+      const track = trackRef.current;
+      const motion = autoScrollRef.current;
+
+      if (track && !motion.paused && !document.hidden && motion.lastTime) {
+        const elapsed = Math.min(time - motion.lastTime, 64);
+        track.scrollLeft += elapsed * 0.018;
+        normalizeInfinitePosition();
+      }
+
+      motion.lastTime = time;
+      motion.frameId = window.requestAnimationFrame(autoScroll);
+    };
+
+    autoScrollRef.current.frameId = window.requestAnimationFrame(autoScroll);
+    return () => window.cancelAnimationFrame(autoScrollRef.current.frameId);
+  }, [normalizeInfinitePosition]);
 
   const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
     if (event.pointerType !== 'mouse' || event.button !== 0 || !trackRef.current) return;
     mouseDragRef.current = { active: true, startX: event.clientX, startScrollLeft: trackRef.current.scrollLeft };
+    autoScrollRef.current.paused = true;
     event.currentTarget.setPointerCapture(event.pointerId);
   };
 
@@ -74,6 +87,7 @@ export default function Portfolio() {
 
   const stopMouseDrag = () => {
     mouseDragRef.current.active = false;
+    autoScrollRef.current.paused = false;
     normalizeInfinitePosition();
   };
 
@@ -81,7 +95,7 @@ export default function Portfolio() {
 
   return (
     <section id="portfolio" className="overflow-hidden bg-slate-50 py-20 dark:bg-slate-900">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6">
+      <div className="container mx-auto px-4 sm:px-6">
         <div className="mb-10 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
           <div className="max-w-2xl">
             <p className="mb-3 text-sm font-bold uppercase tracking-[0.2em] text-cyan-600 dark:text-cyan-400">{labels.eyebrow}</p>
@@ -102,12 +116,12 @@ export default function Portfolio() {
         <div className="relative">
           <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-10 bg-gradient-to-r from-slate-50 to-transparent dark:from-slate-900 sm:w-20" />
           <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-10 bg-gradient-to-l from-slate-50 to-transparent dark:from-slate-900 sm:w-20" />
-          <div ref={trackRef} onScroll={normalizeInfinitePosition} onPointerDown={handlePointerDown} onPointerMove={handlePointerMove} onPointerUp={stopMouseDrag} onPointerCancel={stopMouseDrag} className="project-carousel flex snap-x snap-mandatory gap-5 overflow-x-auto px-[8vw] pb-5 pt-2 select-none sm:px-5" aria-label={sectionTitle}>
+          <div ref={trackRef} onScroll={normalizeInfinitePosition} onPointerDown={handlePointerDown} onPointerMove={handlePointerMove} onPointerUp={stopMouseDrag} onPointerCancel={stopMouseDrag} className="project-carousel flex snap-x snap-mandatory gap-5 overflow-x-auto px-2 pb-4 pt-2 select-none sm:px-1" aria-label={sectionTitle}>
             {loopedProjects.map((project, index) => {
               const projectIndex = index % projects.length;
               const Icon = ICONS[projectIndex % ICONS.length];
               return (
-                <motion.article key={`${project.title}-${index}`} data-project-card initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 0.35 }} className="flex min-h-[350px] w-[min(82vw,21rem)] shrink-0 snap-center cursor-grab flex-col rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition-shadow hover:shadow-xl active:cursor-grabbing dark:border-slate-700 dark:bg-slate-800">
+                <article key={`${project.title}-${index}`} data-project-card className="flex min-h-[340px] w-[min(82vw,19rem)] shrink-0 snap-center cursor-grab flex-col rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition-shadow hover:shadow-xl active:cursor-grabbing dark:border-slate-700 dark:bg-slate-800">
                   <div className="mb-5 flex items-start justify-between gap-4">
                     <div className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-cyan-50 text-cyan-600 dark:bg-cyan-400/10 dark:text-cyan-300"><Icon className="h-5 w-5" /></div>
                     {project.status && <span className="rounded-full bg-emerald-50 px-2.5 py-1 text-right text-[11px] font-semibold leading-tight text-emerald-700 dark:bg-emerald-400/10 dark:text-emerald-300">{project.status}</span>}
@@ -120,7 +134,7 @@ export default function Portfolio() {
                   <a href={project.githubUrl ?? 'https://github.com/ducnb17'} target="_blank" rel="noopener noreferrer" className="mt-auto inline-flex items-center justify-center gap-2 border-t border-slate-100 pt-5 text-sm font-bold text-slate-800 transition hover:text-cyan-600 dark:border-slate-700 dark:text-slate-100 dark:hover:text-cyan-300">
                     <Github className="h-4 w-4" />{project.githubLabel ?? labels.repository}<ArrowRight className="h-4 w-4" />
                   </a>
-                </motion.article>
+                </article>
               );
             })}
           </div>
