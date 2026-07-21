@@ -75,6 +75,7 @@ export interface PortfolioTranslations {
     description: string;
     tech: string[];
     githubUrl?: string;
+    githubLabel?: string;
     status?: string;
   }>;
 }
@@ -206,12 +207,12 @@ export const translations: Record<Locale, Translations> = {
     },
     portfolio: {
       sectionTitle: 'Portfolio',
-      subtitle: 'Ba dự án vibe-code, kết hợp khảo sát kiến trúc, triển khai, kiểm thử và vận hành thực tế',
+      subtitle: 'Bốn dự án triển khai với AI hỗ trợ: xác định yêu cầu, chạy thử, kiểm tra kết quả và vận hành thực tế',
       projects: [
         {
           title: 'Portfolio cá nhân & LMS',
           description:
-            'Xây dựng theo workflow vibe-code với AI: Next.js, đăng nhập Google, LMS, PostgreSQL và Google Drive. Đã triển khai trên VPS; chú trọng session bền vững, phân quyền admin và lưu dữ liệu.',
+            'Website và LMS triển khai theo workflow có AI hướng dẫn. Vai trò tập trung vào xác định yêu cầu, chạy thử, kiểm tra kết quả và deploy VPS; có đăng nhập Google, phân quyền admin và lưu dữ liệu.',
           tech: ['Next.js', 'NextAuth', 'PostgreSQL', 'VPS'],
           githubUrl: 'https://github.com/ducnb17/portfolio',
           status: 'Đang vận hành',
@@ -219,7 +220,7 @@ export const translations: Record<Locale, Translations> = {
         {
           title: 'Soniox Live Translate',
           description:
-            'Ứng dụng dịch giọng nói thời gian thực đã chạy được, phát triển theo workflow vibe-code. Tích hợp FastAPI, WebSocket, Soniox STT/TTS, Electron, SQLite/FTS5 và lựa chọn thiết bị âm thanh; hiện tiếp tục tối ưu độ ổn định và hiệu năng.',
+            'Ứng dụng dịch giọng nói thời gian thực đã chạy được, triển khai theo workflow có AI hướng dẫn. Vai trò tập trung vào mô tả yêu cầu, thử nghiệm, phản hồi lỗi và kiểm tra trải nghiệm; hiện tiếp tục tối ưu độ ổn định.',
           tech: ['FastAPI', 'WebSocket', 'TypeScript', 'Electron'],
           githubUrl: 'https://github.com/ducnb17/soniox-live-translate',
           status: 'Đã chạy - đang tối ưu',
@@ -227,10 +228,19 @@ export const translations: Record<Locale, Translations> = {
         {
           title: 'Async Web Crawler',
           description:
-            'Dự án crawler bất đồng bộ đang phát triển theo milestone. Kiến trúc hướng FastAPI, asyncio, Celery, Redis và PostgreSQL; chưa có bản end-to-end sẵn sàng vận hành, tiếp tục hoàn thiện engine và giao diện.',
+            'Prototype crawler bất đồng bộ đang phát triển theo milestone với AI hỗ trợ. Chưa có bản end-to-end sẵn sàng vận hành; tiếp tục hoàn thiện engine và giao diện từng phần.',
           tech: ['FastAPI', 'asyncio', 'Celery', 'Redis'],
           githubUrl: 'https://github.com/ducnb17/crawler',
           status: 'Đang phát triển',
+        },
+        {
+          title: 'HomeLab, NAS & Telegram Bots',
+          description:
+            'Vận hành môi trường HomeLab/NAS và VPS Linux theo hướng dẫn AI: cấu hình dịch vụ, theo dõi cơ bản và triển khai bot Telegram phục vụ tác vụ cá nhân. Mỗi thay đổi đều được chạy thử và kiểm tra trước khi sử dụng.',
+          tech: ['HomeLab', 'NAS', 'VPS Linux', 'Telegram Bot'],
+          githubUrl: 'https://github.com/ducnb17',
+          githubLabel: 'GitHub cá nhân',
+          status: 'Đang vận hành',
         },
       ],
     },
@@ -348,12 +358,12 @@ export const translations: Record<Locale, Translations> = {
     },
     portfolio: {
       sectionTitle: 'Portfolio',
-      subtitle: 'Three vibe-coded projects combining architecture discovery, implementation, testing, and real-world operation',
+      subtitle: 'Four AI-assisted projects focused on requirements, testing, result checking, and real-world operation',
       projects: [
         {
           title: 'Personal Portfolio & LMS',
           description:
-            'Built through an AI-assisted vibe-coding workflow: Next.js, Google sign-in, LMS, PostgreSQL, and Google Drive. Deployed on a VPS with durable sessions, admin access control, and persistent data.',
+            'A website and LMS delivered through an AI-guided workflow. My role focuses on defining requirements, running tests, checking results, and deploying to a VPS; it includes Google sign-in, admin access control, and persisted data.',
           tech: ['Next.js', 'NextAuth', 'PostgreSQL', 'VPS'],
           githubUrl: 'https://github.com/ducnb17/portfolio',
           status: 'Running in production',
@@ -361,7 +371,7 @@ export const translations: Record<Locale, Translations> = {
         {
           title: 'Soniox Live Translate',
           description:
-            'A working real-time speech translation application developed through a vibe-coding workflow. Integrates FastAPI, WebSockets, Soniox STT/TTS, Electron, SQLite/FTS5, and audio-device selection; ongoing work focuses on reliability and performance.',
+            'A working real-time speech translation application delivered through an AI-guided workflow. My role focuses on requirements, testing, bug feedback, and experience checks; reliability optimization is ongoing.',
           tech: ['FastAPI', 'WebSocket', 'TypeScript', 'Electron'],
           githubUrl: 'https://github.com/ducnb17/soniox-live-translate',
           status: 'Working - optimizing',
@@ -369,10 +379,19 @@ export const translations: Record<Locale, Translations> = {
         {
           title: 'Async Web Crawler',
           description:
-            'An asynchronous crawler under milestone-based development, designed around FastAPI, asyncio, Celery, Redis, and PostgreSQL. It is not yet an end-to-end runnable product; engine and UI work are still in progress.',
+            'An asynchronous crawler prototype under milestone-based development with AI assistance. It is not yet an end-to-end runnable product; engine and UI work are still in progress.',
           tech: ['FastAPI', 'asyncio', 'Celery', 'Redis'],
           githubUrl: 'https://github.com/ducnb17/crawler',
           status: 'In development',
+        },
+        {
+          title: 'HomeLab, NAS & Telegram Bots',
+          description:
+            'Operating a HomeLab/NAS and Linux VPS environment with AI guidance: basic service configuration, monitoring, and Telegram bot deployment for personal tasks. Changes are tested and checked before use.',
+          tech: ['HomeLab', 'NAS', 'Linux VPS', 'Telegram Bot'],
+          githubUrl: 'https://github.com/ducnb17',
+          githubLabel: 'GitHub profile',
+          status: 'In operation',
         },
       ],
     },
@@ -490,12 +509,12 @@ export const translations: Record<Locale, Translations> = {
     },
     portfolio: {
       sectionTitle: 'ポートフォリオ',
-      subtitle: '設計調査、実装、テスト、運用を組み合わせた3つのVibe Codingプロジェクト',
+      subtitle: '要件整理、テスト、結果確認、実運用に取り組む4つのAI支援プロジェクト',
       projects: [
         {
           title: '個人ポートフォリオ & LMS',
           description:
-            'Next.js、Googleログイン、LMS、PostgreSQL、Google DriveをAI支援のVibe Codingワークフローで構築。VPSにデプロイ済みで、永続セッションと管理者権限を実装。',
+            'AIの支援を受けて構築したWebサイトとLMS。要件整理、テスト、結果確認、VPSへのデプロイを中心に担当し、Googleログイン、管理者権限、データ保存を備える。',
           tech: ['Next.js', 'NextAuth', 'PostgreSQL', 'VPS'],
           githubUrl: 'https://github.com/ducnb17/portfolio',
           status: '運用中',
@@ -503,7 +522,7 @@ export const translations: Record<Locale, Translations> = {
         {
           title: 'Soniox Live Translate',
           description:
-            'FastAPI、WebSocket、Soniox STT/TTS、Electron、SQLite/FTS5を統合した、動作するリアルタイム音声翻訳アプリ。現在は安定性と性能を最適化中。',
+            'AI支援ワークフローで構築した、動作するリアルタイム音声翻訳アプリ。要件整理、テスト、バグ報告、体験確認を中心に担当し、現在は安定性を最適化中。',
           tech: ['FastAPI', 'WebSocket', 'TypeScript', 'Electron'],
           githubUrl: 'https://github.com/ducnb17/soniox-live-translate',
           status: '動作中 - 最適化中',
@@ -511,10 +530,19 @@ export const translations: Record<Locale, Translations> = {
         {
           title: 'Async Web Crawler',
           description:
-            'FastAPI、asyncio、Celery、Redis、PostgreSQLを中心に設計した非同期クローラー。エンドツーエンドで動作する製品はまだ未完成で、エンジンとUIを開発中。',
+            'AI支援でマイルストーンごとに開発中の非同期クローラー試作。エンドツーエンドで動作する製品は未完成で、エンジンとUIを段階的に開発中。',
           tech: ['FastAPI', 'asyncio', 'Celery', 'Redis'],
           githubUrl: 'https://github.com/ducnb17/crawler',
           status: '開発中',
+        },
+        {
+          title: 'HomeLab、NAS & Telegram Bot',
+          description:
+            'AIのガイドを受けてHomeLab/NASとLinux VPS環境を運用。基本的なサービス設定、監視、個人用タスクのTelegram Botデプロイを行い、変更は利用前にテスト・確認する。',
+          tech: ['HomeLab', 'NAS', 'Linux VPS', 'Telegram Bot'],
+          githubUrl: 'https://github.com/ducnb17',
+          githubLabel: 'GitHubプロフィール',
+          status: '運用中',
         },
       ],
     },
