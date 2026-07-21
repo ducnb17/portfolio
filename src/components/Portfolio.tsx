@@ -45,6 +45,11 @@ export default function Portfolio() {
                   <h3 className="text-xl font-bold mb-3 text-gray-800 dark:text-white">
                     {project.title}
                   </h3>
+                  {project.status && (
+                    <span className="inline-flex mb-3 px-2.5 py-1 text-xs font-semibold rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300">
+                      {project.status}
+                    </span>
+                  )}
                   <p className="text-gray-600 dark:text-gray-300 mb-4 line-clamp-3">
                     {project.description}
                   </p>
@@ -61,7 +66,9 @@ export default function Portfolio() {
                   <div className="flex gap-3">
                     {/* TODO: Thay href#" bằng link GitHub thật khi có */}
                     <a
-                      href="#"
+                      href={project.githubUrl ?? 'https://github.com/ducnb17'}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="flex-1 px-4 py-2 bg-gray-800 dark:bg-gray-700 text-white text-center rounded-lg hover:bg-gray-900 dark:hover:bg-gray-600 transition-colors flex items-center justify-center gap-2"
                     >
                       <Github className="w-4 h-4" />

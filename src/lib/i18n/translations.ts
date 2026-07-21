@@ -74,6 +74,8 @@ export interface PortfolioTranslations {
     title: string;
     description: string;
     tech: string[];
+    githubUrl?: string;
+    status?: string;
   }>;
 }
 
@@ -204,31 +206,31 @@ export const translations: Record<Locale, Translations> = {
     },
     portfolio: {
       sectionTitle: 'Portfolio',
-      subtitle: 'Một số dự án tiêu biểu trong lĩnh vực AI và hạ tầng hệ thống',
+      subtitle: 'Ba dự án vibe-code, kết hợp khảo sát kiến trúc, triển khai, kiểm thử và vận hành thực tế',
       projects: [
         {
-          title: 'Triển khai mô hình AI Local (Ollama) trên Docker',
+          title: 'Portfolio cá nhân & LMS',
           description:
-            'Tự cấu hình Docker và Ollama để chạy các mô hình ngôn ngữ lớn (LLM) trên máy cá nhân. Xử lý bài toán tối ưu VRAM để tránh tràn bộ nhớ khi chạy mô hình trên GPU phổ thông (RTX 3060).',
-          tech: ['Docker', 'Ollama', 'AI Local'],
+            'Xây dựng theo workflow vibe-code với AI: Next.js, đăng nhập Google, LMS, PostgreSQL và Google Drive. Đã triển khai trên VPS; chú trọng session bền vững, phân quyền admin và lưu dữ liệu.',
+          tech: ['Next.js', 'NextAuth', 'PostgreSQL', 'VPS'],
+          githubUrl: 'https://github.com/ducnb17/portfolio',
+          status: 'Đang vận hành',
         },
         {
-          title: 'Giải pháp lưu trữ và giám sát Camera qua Synology NAS',
+          title: 'Soniox Live Translate',
           description:
-            'Cấu hình hệ thống NAS Synology, tích hợp và quản lý luồng dữ liệu từ camera an ninh, thiết lập phân quyền truy cập và lưu trữ dữ liệu an toàn.',
-          tech: ['Synology NAS', 'Surveillance', 'Storage'],
+            'Ứng dụng dịch giọng nói thời gian thực đã chạy được, phát triển theo workflow vibe-code. Tích hợp FastAPI, WebSocket, Soniox STT/TTS, Electron, SQLite/FTS5 và lựa chọn thiết bị âm thanh; hiện tiếp tục tối ưu độ ổn định và hiệu năng.',
+          tech: ['FastAPI', 'WebSocket', 'TypeScript', 'Electron'],
+          githubUrl: 'https://github.com/ducnb17/soniox-live-translate',
+          status: 'Đã chạy - đang tối ưu',
         },
         {
-          title: 'Thiết kế và tối ưu hạ tầng mạng nội bộ (Home Lab)',
+          title: 'Async Web Crawler',
           description:
-            'Tự thiết kế và xử lý sự cố hạ tầng mạng gia đình, bao gồm bài toán giải nhiệt cho modem/router quá tải nhiệt gây nghẽn mạng, tối ưu hiệu năng đường truyền.',
-          tech: ['Networking', 'Troubleshooting', 'Home Lab'],
-        },
-        {
-          title: 'Quản lý cơ sở dữ liệu - Hệ thống vận hành',
-          description:
-            'Công cụ quản lý và vận hành cơ sở dữ liệu MySQL, tối ưu truy vấn và sao lưu dữ liệu.',
-          tech: ['MySQL', 'Database', 'Backup'],
+            'Dự án crawler bất đồng bộ đang phát triển theo milestone. Kiến trúc hướng FastAPI, asyncio, Celery, Redis và PostgreSQL; chưa có bản end-to-end sẵn sàng vận hành, tiếp tục hoàn thiện engine và giao diện.',
+          tech: ['FastAPI', 'asyncio', 'Celery', 'Redis'],
+          githubUrl: 'https://github.com/ducnb17/crawler',
+          status: 'Đang phát triển',
         },
       ],
     },
@@ -346,31 +348,31 @@ export const translations: Record<Locale, Translations> = {
     },
     portfolio: {
       sectionTitle: 'Portfolio',
-      subtitle: 'Featured projects in AI and system infrastructure',
+      subtitle: 'Three vibe-coded projects combining architecture discovery, implementation, testing, and real-world operation',
       projects: [
         {
-          title: 'Local AI Model Deployment (Ollama) on Docker',
+          title: 'Personal Portfolio & LMS',
           description:
-            'Self-configured Docker and Ollama to run large language models (LLM) on a personal machine. Solved VRAM optimization to prevent out-of-memory errors when running models on a consumer GPU (RTX 3060).',
-          tech: ['Docker', 'Ollama', 'AI Local'],
+            'Built through an AI-assisted vibe-coding workflow: Next.js, Google sign-in, LMS, PostgreSQL, and Google Drive. Deployed on a VPS with durable sessions, admin access control, and persistent data.',
+          tech: ['Next.js', 'NextAuth', 'PostgreSQL', 'VPS'],
+          githubUrl: 'https://github.com/ducnb17/portfolio',
+          status: 'Running in production',
         },
         {
-          title: 'Camera Storage & Monitoring via Synology NAS',
+          title: 'Soniox Live Translate',
           description:
-            'Configured a Synology NAS system, integrated and managed data streams from security cameras, set up access control and secure data storage.',
-          tech: ['Synology NAS', 'Surveillance', 'Storage'],
+            'A working real-time speech translation application developed through a vibe-coding workflow. Integrates FastAPI, WebSockets, Soniox STT/TTS, Electron, SQLite/FTS5, and audio-device selection; ongoing work focuses on reliability and performance.',
+          tech: ['FastAPI', 'WebSocket', 'TypeScript', 'Electron'],
+          githubUrl: 'https://github.com/ducnb17/soniox-live-translate',
+          status: 'Working - optimizing',
         },
         {
-          title: 'Home Lab Network Infrastructure Design & Optimization',
+          title: 'Async Web Crawler',
           description:
-            'Self-designed and troubleshot home network infrastructure, including thermal management for overheating modem/router causing network congestion, and optimized throughput performance.',
-          tech: ['Networking', 'Troubleshooting', 'Home Lab'],
-        },
-        {
-          title: 'Database Management - Operations System',
-          description:
-            'Tool for managing and operating MySQL databases, optimizing queries and data backups.',
-          tech: ['MySQL', 'Database', 'Backup'],
+            'An asynchronous crawler under milestone-based development, designed around FastAPI, asyncio, Celery, Redis, and PostgreSQL. It is not yet an end-to-end runnable product; engine and UI work are still in progress.',
+          tech: ['FastAPI', 'asyncio', 'Celery', 'Redis'],
+          githubUrl: 'https://github.com/ducnb17/crawler',
+          status: 'In development',
         },
       ],
     },
@@ -488,31 +490,31 @@ export const translations: Record<Locale, Translations> = {
     },
     portfolio: {
       sectionTitle: 'ポートフォリオ',
-      subtitle: 'AIおよびシステムインフラ分野の代表的なプロジェクト',
+      subtitle: '設計調査、実装、テスト、運用を組み合わせた3つのVibe Codingプロジェクト',
       projects: [
         {
-          title: 'DockerでのローカルAIモデル（Ollama）デプロイ',
+          title: '個人ポートフォリオ & LMS',
           description:
-            'DockerとOllamaを自己設定し、個人のマシンで大規模言語モデル（LLM）を実行。一般向けGPU（RTX 3060）でのモデル実行時のVRAMオーバーフロー防止のための最適化を実施。',
-          tech: ['Docker', 'Ollama', 'AI Local'],
+            'Next.js、Googleログイン、LMS、PostgreSQL、Google DriveをAI支援のVibe Codingワークフローで構築。VPSにデプロイ済みで、永続セッションと管理者権限を実装。',
+          tech: ['Next.js', 'NextAuth', 'PostgreSQL', 'VPS'],
+          githubUrl: 'https://github.com/ducnb17/portfolio',
+          status: '運用中',
         },
         {
-          title: 'Synology NASによるカメラ録画・監視システム',
+          title: 'Soniox Live Translate',
           description:
-            'Synology NASシステムを構築し、防犯カメラからのデータストリームを統合・管理。アクセス権限の設定と安全なデータストレージを実現。',
-          tech: ['Synology NAS', 'Surveillance', 'Storage'],
+            'FastAPI、WebSocket、Soniox STT/TTS、Electron、SQLite/FTS5を統合した、動作するリアルタイム音声翻訳アプリ。現在は安定性と性能を最適化中。',
+          tech: ['FastAPI', 'WebSocket', 'TypeScript', 'Electron'],
+          githubUrl: 'https://github.com/ducnb17/soniox-live-translate',
+          status: '動作中 - 最適化中',
         },
         {
-          title: 'ホームラボネットワークインフラの設計・最適化',
+          title: 'Async Web Crawler',
           description:
-            '家庭用ネットワークインフラを自己設計・トラブルシューティング。モデム/ルーターの過熱による通信障害の冷却対策と、スループット性能の最適化を実施。',
-          tech: ['Networking', 'Troubleshooting', 'Home Lab'],
-        },
-        {
-          title: 'データベース管理 - 運用システム',
-          description:
-            'MySQLデータベースの管理・運用ツール。クエリの最適化とデータバックアップに対応。',
-          tech: ['MySQL', 'Database', 'Backup'],
+            'FastAPI、asyncio、Celery、Redis、PostgreSQLを中心に設計した非同期クローラー。エンドツーエンドで動作する製品はまだ未完成で、エンジンとUIを開発中。',
+          tech: ['FastAPI', 'asyncio', 'Celery', 'Redis'],
+          githubUrl: 'https://github.com/ducnb17/crawler',
+          status: '開発中',
         },
       ],
     },
