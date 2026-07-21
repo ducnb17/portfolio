@@ -5,7 +5,7 @@ import { useSession, signIn, signOut } from 'next-auth/react';
 import { motion } from 'framer-motion';
 import {
   Loader2, BookOpen, FileText, Video, File, LogOut,
-  ChevronRight, CheckCircle, ChevronDown, Upload, Trash2, FolderOpen, Plus, X, ExternalLink,
+  ChevronRight, CheckCircle, ChevronDown, Upload, Trash2, FolderOpen, Plus, X, ExternalLink, Pencil, Users, Volume2, ImageIcon,
 } from 'lucide-react';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
@@ -14,7 +14,7 @@ interface DriveItem {
   modifiedTime?: string; size?: string; thumbnailLink?: string;
 }
 interface Chapter { id: string; name: string; files: DriveItem[]; }
-interface Course { id: string; name: string; mimeType?: string; group?: 'courses' | 'huyen-hoc'; urls?: string[]; }
+interface Course { id: string; name: string; mimeType?: string; group?: 'courses' | 'huyen-hoc'; urls?: string[]; isCustom?: boolean; }
 interface CourseDetail {
   id: string; name: string;
   chapters: Chapter[]; files: DriveItem[]; lessons: DriveItem[];
@@ -23,6 +23,8 @@ interface CourseDetail {
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 function FileIcon({ mimeType }: { mimeType: string }) {
   if (mimeType.includes('video')) return <Video className="w-4 h-4 text-cyan-400 flex-shrink-0" />;
+  if (mimeType.includes('audio')) return <Volume2 className="w-4 h-4 text-violet-400 flex-shrink-0" />;
+  if (mimeType.startsWith('image/')) return <ImageIcon className="w-4 h-4 text-emerald-400 flex-shrink-0" />;
   if (mimeType.includes('pdf'))   return <FileText className="w-4 h-4 text-red-400 flex-shrink-0" />;
   return <File className="w-4 h-4 text-gray-400 flex-shrink-0" />;
 }
@@ -59,7 +61,7 @@ async function resetCourse(courseId: string) {
 }
 
 // ─── Upload Panel ─────────────────────────────────────────────────────────────
-function UploadPanel({ targetFolderId, onUploaded }: { targetFolderId: string; onUploaded: () => void }) {
+function UploadPanel({ targetFolderId, courseId, onUploaded }: { targetFolderId: string; courseId: string; onUploaded: () => void }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
   const [msg, setMsg] = useState<{ type: 'ok' | 'err'; text: string } | null>(null);
@@ -71,6 +73,7 @@ function UploadPanel({ targetFolderId, onUploaded }: { targetFolderId: string; o
     const fd = new FormData();
     fd.append('file', file);
     fd.append('folderId', targetFolderId);
+    fd.append('courseId', courseId);
     try {
       const r = await fetch('/api/lms/upload', { method: 'POST', body: fd });
       const data = await r.json();
@@ -92,9 +95,75 @@ function UploadPanel({ targetFolderId, onUploaded }: { targetFolderId: string; o
         {uploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
         {uploading ? 'Đang tải...' : 'Chọn file'}
         <input ref={inputRef} type="file" className="hidden" disabled={uploading} onChange={handleUpload}
-          accept="video/*,.pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.zip,image/*,text/*" />
+          accept="*/*" />
       </label>
       {msg && <p className={`mt-2 text-xs ${msg.type === 'ok' ? 'text-green-500' : 'text-red-500'}`}>{msg.text}</p>}
+    </div>
+  );
+}
+
+function AccessPanel({ onClose }: { onClose: () => void }) {
+  const [emails, setEmails] = useState<string[]>([]);
+  const [email, setEmail] = useState('');
+  const [editing, setEditing] = useState<string | null>(null);
+  const [message, setMessage] = useState<string | null>(null);
+
+  const load = useCallback(async () => {
+    const response = await fetch('/api/lms/access');
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error || 'Không thể tải danh sách email');
+    setEmails(data.emails.map((item: { email: string }) => item.email));
+  }, []);
+
+  useEffect(() => { load().catch((error) => setMessage(error.message)); }, [load]);
+
+  const submit = async () => {
+    const method = editing ? 'PATCH' : 'POST';
+    const body = editing ? { email: editing, nextEmail: email } : { email };
+    try {
+      const response = await fetch('/api/lms/access', {
+        method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body),
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || 'Không thể lưu email');
+      setEmail(''); setEditing(null); setMessage('Đã lưu quyền truy cập.'); await load();
+    } catch (error) { setMessage(error instanceof Error ? error.message : 'Lỗi không xác định'); }
+  };
+
+  const remove = async (target: string) => {
+    if (!confirm(`Xóa quyền truy cập của ${target}?`)) return;
+    const response = await fetch('/api/lms/access', {
+      method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: target }),
+    });
+    const data = await response.json();
+    if (!response.ok) { setMessage(data.error || 'Không thể xóa email'); return; }
+    await load();
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
+      <div className="w-full max-w-lg rounded-xl bg-white dark:bg-gray-800 shadow-2xl p-5">
+        <div className="flex items-center justify-between mb-4">
+          <div><h2 className="font-bold text-gray-800 dark:text-white">Quyền truy cập LMS</h2><p className="text-xs text-gray-500">Admin: ducnb17@gmail.com</p></div>
+          <button onClick={onClose} className="p-1 text-gray-500 hover:text-red-500"><X className="w-5 h-5" /></button>
+        </div>
+        <div className="flex gap-2 mb-3">
+          <input value={email} onChange={(event) => setEmail(event.target.value)} type="email" placeholder="email@example.com"
+            className="flex-1 px-3 py-2 text-sm rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900" />
+          <button onClick={submit} className="px-3 py-2 text-sm rounded-lg bg-cyan-500 text-white hover:bg-cyan-600">{editing ? 'Lưu' : 'Thêm'}</button>
+        </div>
+        {editing && <button onClick={() => { setEditing(null); setEmail(''); }} className="mb-3 text-xs text-gray-500 hover:text-red-500">Hủy sửa</button>}
+        {message && <p className="mb-3 text-xs text-cyan-600 dark:text-cyan-400">{message}</p>}
+        <div className="max-h-64 overflow-y-auto divide-y divide-gray-100 dark:divide-gray-700 border rounded-lg">
+          {emails.length === 0 ? <p className="p-3 text-sm text-gray-500">Chưa có email nào được thêm trong database.</p> : emails.map((item) => (
+            <div key={item} className="flex items-center gap-2 p-3 text-sm">
+              <span className="flex-1 truncate text-gray-700 dark:text-gray-200">{item}</span>
+              <button onClick={() => { setEditing(item); setEmail(item); }} title="Sửa"><Pencil className="w-4 h-4 text-cyan-500" /></button>
+              <button onClick={() => remove(item)} title="Xóa"><Trash2 className="w-4 h-4 text-red-500" /></button>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
@@ -102,6 +171,7 @@ function UploadPanel({ targetFolderId, onUploaded }: { targetFolderId: string; o
 // ─── Main Page ────────────────────────────────────────────────────────────────
 export default function LMSPage() {
   const { data: session, status } = useSession();
+  const isAdmin = (session?.user as { isAdmin?: boolean } | undefined)?.isAdmin === true;
   const [courses, setCourses]           = useState<Course[]>([]);
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
   const [detail, setDetail]             = useState<CourseDetail | null>(null);
@@ -119,6 +189,8 @@ export default function LMSPage() {
   const [addGroup, setAddGroup] = useState<'courses' | 'huyen-hoc'>('huyen-hoc');
   const [addLoading, setAddLoading] = useState(false);
   const [addMsg, setAddMsg]     = useState<{ type: 'ok' | 'err'; text: string } | null>(null);
+  const [editingCourse, setEditingCourse] = useState<Course | null>(null);
+  const [showAccess, setShowAccess] = useState(false);
 
   // Tải tiến trình từ server
   const loadProgress = useCallback(async () => {
@@ -187,18 +259,34 @@ export default function LMSPage() {
     setAddLoading(true); setAddMsg(null);
     try {
       const r = await fetch('/api/lms/courses', {
-        method: 'POST',
+        method: editingCourse ? 'PUT' : 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: addName.trim(), url: addUrl.trim(), group: addGroup }),
+        body: JSON.stringify({ id: editingCourse?.id, name: addName.trim(), url: addUrl.trim(), group: addGroup }),
       });
       const data = await r.json();
-      if (!r.ok) throw new Error(data.error || 'Lỗi thêm khóa học');
-      setAddMsg({ type: 'ok', text: '✓ Đã thêm! Tải lại...' });
-      setAddName(''); setAddUrl('');
-      setTimeout(() => { setShowAddCourse(false); setAddMsg(null); fetchCourses(); }, 1200);
+      if (!r.ok) throw new Error(data.error || 'Lỗi lưu khóa học');
+      setAddMsg({ type: 'ok', text: editingCourse ? '✓ Đã cập nhật!' : '✓ Đã thêm!' });
+      setAddName(''); setAddUrl(''); setEditingCourse(null);
+      setTimeout(() => { setShowAddCourse(false); setAddMsg(null); fetchCourses(); }, 800);
     } catch (e) {
       setAddMsg({ type: 'err', text: e instanceof Error ? e.message : 'Lỗi không xác định' });
     } finally { setAddLoading(false); }
+  };
+
+  const startEditCourse = (course: Course) => {
+    setEditingCourse(course); setAddName(course.name); setAddUrl(course.urls?.[0] ?? '');
+    setAddGroup(course.group ?? 'huyen-hoc'); setAddMsg(null); setShowAddCourse(true);
+  };
+
+  const deleteCourse = async (course: Course) => {
+    if (!confirm(`Xóa ${course.name} khỏi LMS? File trên Google Drive không bị xóa.`)) return;
+    const response = await fetch('/api/lms/courses', {
+      method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: course.id }),
+    });
+    const data = await response.json();
+    if (!response.ok) { setError(data.error || 'Không thể xóa khóa học'); return; }
+    if (selectedCourse?.id === course.id) { setSelectedCourse(null); setDetail(null); }
+    fetchCourses();
   };
 
   const handleResetProgress = async () => {
@@ -279,25 +367,31 @@ export default function LMSPage() {
         <div className="flex items-center gap-4">
           <img src={session?.user?.image ?? ''} alt="" className="w-8 h-8 rounded-full hidden sm:block" />
           <span className="text-sm text-gray-500 dark:text-gray-400 hidden sm:block">{session?.user?.email}</span>
+          {isAdmin && <button onClick={() => setShowAccess(true)} title="Quản lý email LMS" className="p-2 text-cyan-600 hover:text-cyan-500">
+            <Users className="w-4 h-4" />
+          </button>}
           <button onClick={() => signOut()} className="flex items-center gap-2 px-3 py-2 text-sm text-gray-600 dark:text-gray-300 hover:text-red-500 transition-colors">
             <LogOut className="w-4 h-4" /><span className="hidden sm:inline">Đăng xuất</span>
           </button>
         </div>
       </div>
 
+      {showAccess && isAdmin && <AccessPanel onClose={() => setShowAccess(false)} />}
+
       <div className="flex h-[calc(100vh-112px)]">
         {/* Sidebar — course list */}
         <aside className="w-72 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 overflow-y-auto flex-shrink-0">
           <div className="p-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
             <h2 className="font-semibold text-gray-700 dark:text-gray-300 text-xs uppercase tracking-wider">Danh sách khóa học</h2>
-            <button onClick={() => { setShowAddCourse(v => !v); setAddMsg(null); }} title="Thêm khóa học"
-              className="p-1 rounded-lg text-gray-400 hover:text-cyan-500 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+            <button onClick={() => { setShowAddCourse(v => !v); setAddMsg(null); if (showAddCourse) { setEditingCourse(null); setAddName(''); setAddUrl(''); } }} title="Thêm khóa học"
+              className={`${isAdmin ? '' : 'hidden '}p-1 rounded-lg text-gray-400 hover:text-cyan-500 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors`}>
               {showAddCourse ? <X className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
             </button>
           </div>
           {/* Panel thêm khóa học */}
           {showAddCourse && (
             <div className="p-3 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 space-y-2">
+              <p className="text-xs font-semibold text-cyan-600">{editingCourse ? 'Sửa khóa học đã thêm' : 'Thêm khóa học mới'}</p>
               <input value={addName} onChange={e => setAddName(e.target.value)} placeholder="Tên khóa học"
                 className="w-full px-3 py-2 text-sm rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-cyan-500" />
               <input value={addUrl} onChange={e => setAddUrl(e.target.value)} placeholder="Link Google Drive"
@@ -310,7 +404,7 @@ export default function LMSPage() {
               <button onClick={handleAddCourse} disabled={addLoading}
                 className="w-full px-3 py-2 text-sm bg-cyan-500 hover:bg-cyan-600 text-white rounded-lg transition-colors flex items-center justify-center gap-2 disabled:opacity-50">
                 {addLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
-                Thêm khóa học
+                {editingCourse ? 'Lưu thay đổi' : 'Thêm khóa học'}
               </button>
               {addMsg && <p className={`text-xs ${addMsg.type === 'ok' ? 'text-green-500' : 'text-red-500'}`}>{addMsg.text}</p>}
             </div>
@@ -383,12 +477,18 @@ export default function LMSPage() {
               <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-6 py-4">
                 <div className="flex items-center justify-between mb-2">
                   <h2 className="text-xl font-bold text-gray-800 dark:text-white">{selectedCourse.name}</h2>
-                  {completedCount > 0 && (
-                    <button onClick={handleResetProgress} title="Reset tiến trình"
-                      className="flex items-center gap-1 text-xs text-gray-400 hover:text-red-500 transition-colors">
-                      <Trash2 className="w-3 h-3" /> Reset
-                    </button>
-                  )}
+                  <div className="flex items-center gap-3">
+                    {isAdmin && selectedCourse.isCustom && <>
+                      <button onClick={() => startEditCourse(selectedCourse)} title="Sửa khóa học" className="text-xs text-cyan-600 hover:text-cyan-500"><Pencil className="w-4 h-4" /></button>
+                      <button onClick={() => deleteCourse(selectedCourse)} title="Xóa khóa học khỏi LMS" className="text-xs text-red-500 hover:text-red-400"><Trash2 className="w-4 h-4" /></button>
+                    </>}
+                    {completedCount > 0 && (
+                      <button onClick={handleResetProgress} title="Reset tiến trình"
+                        className="flex items-center gap-1 text-xs text-gray-400 hover:text-red-500 transition-colors">
+                        <Trash2 className="w-3 h-3" /> Reset
+                      </button>
+                    )}
+                  </div>
                 </div>
                 {totalLessons > 0 && (
                   <div>
@@ -420,6 +520,17 @@ export default function LMSPage() {
                           ))}
                         </div>
                       )}
+                      {isAdmin && !selectedCourse.id.startsWith('mock-') && (
+                        <div className="mx-3 mb-2">
+                          <button onClick={() => setShowUpload(showUpload === selectedCourse.id ? null : selectedCourse.id)}
+                            className="flex items-center gap-1 text-xs text-gray-400 hover:text-cyan-500 transition-colors">
+                            <Upload className="w-3 h-3" /> Upload vào thư mục gốc khóa học
+                          </button>
+                          {showUpload === selectedCourse.id && (
+                            <UploadPanel targetFolderId={selectedCourse.id} courseId={selectedCourse.id} onUploaded={() => { openCourse(selectedCourse); setShowUpload(null); }} />
+                          )}
+                        </div>
+                      )}
                       {/* Chapters */}
                       {detail.chapters.map((ch) => {
                         const expanded = expandedChapters.has(ch.id);
@@ -447,7 +558,7 @@ export default function LMSPage() {
                                   <p className="px-3 py-2 text-xs text-gray-400 italic">Chưa có bài học</p>
                                 )}
                                 {/* Upload button — chỉ khi có Drive thực (không phải mock) */}
-                                {!selectedCourse.id.startsWith('mock-') && (
+                                {isAdmin && !selectedCourse.id.startsWith('mock-') && (
                                   <div>
                                     <button onClick={() => setShowUpload(showUpload === ch.id ? null : ch.id)}
                                       className="mt-1 mx-3 flex items-center gap-1 text-xs text-gray-400 hover:text-cyan-500 transition-colors">
@@ -455,7 +566,7 @@ export default function LMSPage() {
                                     </button>
                                     {showUpload === ch.id && (
                                       <div className="mx-3">
-                                        <UploadPanel targetFolderId={ch.id} onUploaded={() => { openCourse(selectedCourse); setShowUpload(null); }} />
+                                        <UploadPanel targetFolderId={ch.id} courseId={selectedCourse.id} onUploaded={() => { openCourse(selectedCourse); setShowUpload(null); }} />
                                       </div>
                                     )}
                                   </div>
@@ -479,7 +590,7 @@ export default function LMSPage() {
                         {selectedLesson.size && <span>Kích thước: {formatSize(selectedLesson.size)}</span>}
                         <code className="bg-gray-200 dark:bg-gray-700 px-1.5 py-0.5 rounded text-xs">{selectedLesson.mimeType}</code>
                       </div>
-                      <div className="bg-black rounded-xl overflow-hidden aspect-video shadow-2xl">
+                      <div className={`bg-black rounded-xl overflow-hidden shadow-2xl ${selectedLesson.mimeType.startsWith('video/') ? 'aspect-video' : 'min-h-[480px]'}`}>
                         <iframe
                           src={`https://drive.google.com/file/d/${selectedLesson.id}/preview`}
                           className="w-full h-full" allow="autoplay" allowFullScreen
@@ -487,7 +598,7 @@ export default function LMSPage() {
                         />
                       </div>
                       <div className="mt-3 flex items-center justify-between">
-                        <p className="text-xs text-gray-400">Nội dung nhúng từ Google Drive — không thể tải về.</p>
+                        <p className="text-xs text-gray-400">Video, audio, ảnh và tài liệu được xem trực tiếp khi Google Drive hỗ trợ preview. File ZIP, ISO hoặc codec không hỗ trợ sẽ mở trên Google Drive để tải xuống.</p>
                         <a href={`https://drive.google.com/file/d/${selectedLesson.id}/view`} target="_blank" rel="noopener noreferrer"
                           className="flex items-center gap-1 text-xs text-cyan-500 hover:text-cyan-400">
                           <ExternalLink className="w-3 h-3" /> Mở Drive

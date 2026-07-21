@@ -74,6 +74,9 @@ export interface PortfolioTranslations {
     title: string;
     description: string;
     tech: string[];
+    githubUrl?: string;
+    githubLabel?: string;
+    status?: string;
   }>;
 }
 
@@ -204,31 +207,40 @@ export const translations: Record<Locale, Translations> = {
     },
     portfolio: {
       sectionTitle: 'Portfolio',
-      subtitle: 'Một số dự án tiêu biểu trong lĩnh vực AI và hạ tầng hệ thống',
+      subtitle: 'Bốn dự án triển khai với AI hỗ trợ: xác định yêu cầu, chạy thử, kiểm tra kết quả và vận hành thực tế',
       projects: [
         {
-          title: 'Triển khai mô hình AI Local (Ollama) trên Docker',
+          title: 'Portfolio cá nhân & LMS',
           description:
-            'Tự cấu hình Docker và Ollama để chạy các mô hình ngôn ngữ lớn (LLM) trên máy cá nhân. Xử lý bài toán tối ưu VRAM để tránh tràn bộ nhớ khi chạy mô hình trên GPU phổ thông (RTX 3060).',
-          tech: ['Docker', 'Ollama', 'AI Local'],
+            'Website và LMS triển khai theo workflow có AI hướng dẫn. Vai trò tập trung vào xác định yêu cầu, chạy thử, kiểm tra kết quả và deploy VPS; có đăng nhập Google, phân quyền admin và lưu dữ liệu.',
+          tech: ['Next.js', 'NextAuth', 'PostgreSQL', 'VPS'],
+          githubUrl: 'https://github.com/ducnb17/portfolio',
+          status: 'Đang vận hành',
         },
         {
-          title: 'Giải pháp lưu trữ và giám sát Camera qua Synology NAS',
+          title: 'Soniox Live Translate',
           description:
-            'Cấu hình hệ thống NAS Synology, tích hợp và quản lý luồng dữ liệu từ camera an ninh, thiết lập phân quyền truy cập và lưu trữ dữ liệu an toàn.',
-          tech: ['Synology NAS', 'Surveillance', 'Storage'],
+            'Ứng dụng dịch giọng nói thời gian thực đã chạy được, triển khai theo workflow có AI hướng dẫn. Vai trò tập trung vào mô tả yêu cầu, thử nghiệm, phản hồi lỗi và kiểm tra trải nghiệm; hiện tiếp tục tối ưu độ ổn định.',
+          tech: ['FastAPI', 'WebSocket', 'TypeScript', 'Electron'],
+          githubUrl: 'https://github.com/ducnb17/soniox-live-translate',
+          status: 'Đã chạy - đang tối ưu',
         },
         {
-          title: 'Thiết kế và tối ưu hạ tầng mạng nội bộ (Home Lab)',
+          title: 'Async Web Crawler',
           description:
-            'Tự thiết kế và xử lý sự cố hạ tầng mạng gia đình, bao gồm bài toán giải nhiệt cho modem/router quá tải nhiệt gây nghẽn mạng, tối ưu hiệu năng đường truyền.',
-          tech: ['Networking', 'Troubleshooting', 'Home Lab'],
+            'Prototype crawler bất đồng bộ đang phát triển theo milestone với AI hỗ trợ. Chưa có bản end-to-end sẵn sàng vận hành; tiếp tục hoàn thiện engine và giao diện từng phần.',
+          tech: ['FastAPI', 'asyncio', 'Celery', 'Redis'],
+          githubUrl: 'https://github.com/ducnb17/crawler',
+          status: 'Đang phát triển',
         },
         {
-          title: 'Quản lý cơ sở dữ liệu - Hệ thống vận hành',
+          title: 'HomeLab, NAS & Telegram Bots',
           description:
-            'Công cụ quản lý và vận hành cơ sở dữ liệu MySQL, tối ưu truy vấn và sao lưu dữ liệu.',
-          tech: ['MySQL', 'Database', 'Backup'],
+            'Vận hành môi trường HomeLab/NAS và VPS Linux theo hướng dẫn AI: cấu hình dịch vụ, theo dõi cơ bản và triển khai bot Telegram phục vụ tác vụ cá nhân. Mỗi thay đổi đều được chạy thử và kiểm tra trước khi sử dụng.',
+          tech: ['HomeLab', 'NAS', 'VPS Linux', 'Telegram Bot'],
+          githubUrl: 'https://github.com/ducnb17',
+          githubLabel: 'GitHub cá nhân',
+          status: 'Đang vận hành',
         },
       ],
     },
@@ -346,31 +358,40 @@ export const translations: Record<Locale, Translations> = {
     },
     portfolio: {
       sectionTitle: 'Portfolio',
-      subtitle: 'Featured projects in AI and system infrastructure',
+      subtitle: 'Four AI-assisted projects focused on requirements, testing, result checking, and real-world operation',
       projects: [
         {
-          title: 'Local AI Model Deployment (Ollama) on Docker',
+          title: 'Personal Portfolio & LMS',
           description:
-            'Self-configured Docker and Ollama to run large language models (LLM) on a personal machine. Solved VRAM optimization to prevent out-of-memory errors when running models on a consumer GPU (RTX 3060).',
-          tech: ['Docker', 'Ollama', 'AI Local'],
+            'A website and LMS delivered through an AI-guided workflow. My role focuses on defining requirements, running tests, checking results, and deploying to a VPS; it includes Google sign-in, admin access control, and persisted data.',
+          tech: ['Next.js', 'NextAuth', 'PostgreSQL', 'VPS'],
+          githubUrl: 'https://github.com/ducnb17/portfolio',
+          status: 'Running in production',
         },
         {
-          title: 'Camera Storage & Monitoring via Synology NAS',
+          title: 'Soniox Live Translate',
           description:
-            'Configured a Synology NAS system, integrated and managed data streams from security cameras, set up access control and secure data storage.',
-          tech: ['Synology NAS', 'Surveillance', 'Storage'],
+            'A working real-time speech translation application delivered through an AI-guided workflow. My role focuses on requirements, testing, bug feedback, and experience checks; reliability optimization is ongoing.',
+          tech: ['FastAPI', 'WebSocket', 'TypeScript', 'Electron'],
+          githubUrl: 'https://github.com/ducnb17/soniox-live-translate',
+          status: 'Working - optimizing',
         },
         {
-          title: 'Home Lab Network Infrastructure Design & Optimization',
+          title: 'Async Web Crawler',
           description:
-            'Self-designed and troubleshot home network infrastructure, including thermal management for overheating modem/router causing network congestion, and optimized throughput performance.',
-          tech: ['Networking', 'Troubleshooting', 'Home Lab'],
+            'An asynchronous crawler prototype under milestone-based development with AI assistance. It is not yet an end-to-end runnable product; engine and UI work are still in progress.',
+          tech: ['FastAPI', 'asyncio', 'Celery', 'Redis'],
+          githubUrl: 'https://github.com/ducnb17/crawler',
+          status: 'In development',
         },
         {
-          title: 'Database Management - Operations System',
+          title: 'HomeLab, NAS & Telegram Bots',
           description:
-            'Tool for managing and operating MySQL databases, optimizing queries and data backups.',
-          tech: ['MySQL', 'Database', 'Backup'],
+            'Operating a HomeLab/NAS and Linux VPS environment with AI guidance: basic service configuration, monitoring, and Telegram bot deployment for personal tasks. Changes are tested and checked before use.',
+          tech: ['HomeLab', 'NAS', 'Linux VPS', 'Telegram Bot'],
+          githubUrl: 'https://github.com/ducnb17',
+          githubLabel: 'GitHub profile',
+          status: 'In operation',
         },
       ],
     },
@@ -488,31 +509,40 @@ export const translations: Record<Locale, Translations> = {
     },
     portfolio: {
       sectionTitle: 'ポートフォリオ',
-      subtitle: 'AIおよびシステムインフラ分野の代表的なプロジェクト',
+      subtitle: '要件整理、テスト、結果確認、実運用に取り組む4つのAI支援プロジェクト',
       projects: [
         {
-          title: 'DockerでのローカルAIモデル（Ollama）デプロイ',
+          title: '個人ポートフォリオ & LMS',
           description:
-            'DockerとOllamaを自己設定し、個人のマシンで大規模言語モデル（LLM）を実行。一般向けGPU（RTX 3060）でのモデル実行時のVRAMオーバーフロー防止のための最適化を実施。',
-          tech: ['Docker', 'Ollama', 'AI Local'],
+            'AIの支援を受けて構築したWebサイトとLMS。要件整理、テスト、結果確認、VPSへのデプロイを中心に担当し、Googleログイン、管理者権限、データ保存を備える。',
+          tech: ['Next.js', 'NextAuth', 'PostgreSQL', 'VPS'],
+          githubUrl: 'https://github.com/ducnb17/portfolio',
+          status: '運用中',
         },
         {
-          title: 'Synology NASによるカメラ録画・監視システム',
+          title: 'Soniox Live Translate',
           description:
-            'Synology NASシステムを構築し、防犯カメラからのデータストリームを統合・管理。アクセス権限の設定と安全なデータストレージを実現。',
-          tech: ['Synology NAS', 'Surveillance', 'Storage'],
+            'AI支援ワークフローで構築した、動作するリアルタイム音声翻訳アプリ。要件整理、テスト、バグ報告、体験確認を中心に担当し、現在は安定性を最適化中。',
+          tech: ['FastAPI', 'WebSocket', 'TypeScript', 'Electron'],
+          githubUrl: 'https://github.com/ducnb17/soniox-live-translate',
+          status: '動作中 - 最適化中',
         },
         {
-          title: 'ホームラボネットワークインフラの設計・最適化',
+          title: 'Async Web Crawler',
           description:
-            '家庭用ネットワークインフラを自己設計・トラブルシューティング。モデム/ルーターの過熱による通信障害の冷却対策と、スループット性能の最適化を実施。',
-          tech: ['Networking', 'Troubleshooting', 'Home Lab'],
+            'AI支援でマイルストーンごとに開発中の非同期クローラー試作。エンドツーエンドで動作する製品は未完成で、エンジンとUIを段階的に開発中。',
+          tech: ['FastAPI', 'asyncio', 'Celery', 'Redis'],
+          githubUrl: 'https://github.com/ducnb17/crawler',
+          status: '開発中',
         },
         {
-          title: 'データベース管理 - 運用システム',
+          title: 'HomeLab、NAS & Telegram Bot',
           description:
-            'MySQLデータベースの管理・運用ツール。クエリの最適化とデータバックアップに対応。',
-          tech: ['MySQL', 'Database', 'Backup'],
+            'AIのガイドを受けてHomeLab/NASとLinux VPS環境を運用。基本的なサービス設定、監視、個人用タスクのTelegram Botデプロイを行い、変更は利用前にテスト・確認する。',
+          tech: ['HomeLab', 'NAS', 'Linux VPS', 'Telegram Bot'],
+          githubUrl: 'https://github.com/ducnb17',
+          githubLabel: 'GitHubプロフィール',
+          status: '運用中',
         },
       ],
     },

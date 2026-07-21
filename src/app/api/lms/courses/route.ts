@@ -1,8 +1,10 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/lib/authOptions';
-import { isAllowedEmail } from '@/lib/auth';
+import { canAccessLms } from '@/lib/auth';
 import { listDriveFolders } from '@/lib/drive';
+import { isAdminEmail } from '@/lib/admin';
+import { prisma } from '@/lib/prisma';
 
 export const dynamic = 'force-dynamic';
 
@@ -11,6 +13,7 @@ export interface CourseEntry {
   name: string;
   mimeType: string;
   group: 'courses' | 'huyen-hoc'; // nhóm hiển thị
+  isCustom?: boolean;
   urls?: string[]; // link Google Drive bổ sung (nếu có nhiều folder)
 }
 
@@ -39,6 +42,7 @@ const STATIC_COURSES: CourseEntry[] = [
   { id: '1PRvUEg9jNfDalRGwiwduPXNlRjp1aEgd', name: '3.17 Khóa Bát Trạch - Thầy Cường', mimeType: 'application/vnd.google-apps.folder', group: 'huyen-hoc' },
   { id: '1Yb_KhgwG2O3_zksCFeb8d-18rwA451eo', name: '3.03 Khóa Phong Thủy Tam Hợp Phái Minh Việt - Thầy Cường', mimeType: 'application/vnd.google-apps.folder', group: 'huyen-hoc' },
   { id: '1gGDG_Z0Yk6H0E85xHyupZ7NIKIrkuvM2', name: '3.01 Khóa HKDQ Minh Việt - Thầy Cường', mimeType: 'application/vnd.google-apps.folder', group: 'huyen-hoc' },
+  { id: '1x26EVXzXMArIoXmem_ayySQv_2J_V46j', name: '2.01 Khóa Bát Tự Mạnh Phái Sơ Cấp - Thầy Đoàn', mimeType: 'application/vnd.google-apps.folder', group: 'huyen-hoc' },
   { id: '1XaE1ZqCr6Mi648PYG1NB76VluhznjOaA', name: '2.08 Khóa Bát Tự Tứ Trụ K1 Tam Nguyên', mimeType: 'application/vnd.google-apps.folder', group: 'huyen-hoc' },
   { id: '1SFMRgIEMiVOdrlK-KqhyZPrE5wyCsUYh', name: '2.12 Khóa Bát Tự Cơ Bản - Thầy Cường', mimeType: 'application/vnd.google-apps.folder', group: 'huyen-hoc' },
   { id: '1Fi0iPalj9u-_4euRRHZO5b5fkupi4KsN', name: '1.18 Khóa Tử Vi NP 33 Video - Thầy Cường', mimeType: 'application/vnd.google-apps.folder', group: 'huyen-hoc' },
@@ -59,7 +63,7 @@ const STATIC_COURSES: CourseEntry[] = [
 
   // ── Các khóa bổ sung ──
   { id: '1LMNdG5DDPp1mW403bgLU24oIW7c89Bxh', name: '1.27 Khâm Thiên Tứ Hóa Phái - Chiến Nguyễn (17 Video)', mimeType: 'application/vnd.google-apps.folder', group: 'huyen-hoc' },
-  { id: '1rmO1MvNP7Ti1PFpZFCeszllBZo6UBpH', name: '2.09 Khóa Master Bát Tự - Nguyễn Dũng', mimeType: 'application/vnd.google-apps.folder', group: 'huyen-hoc' },
+  { id: '1rmO1MvNP7Tif1PFpZFCeszllBZo6UBpH', name: '2.09 Khóa Master Bát Tự - Nguyễn Dũng', mimeType: 'application/vnd.google-apps.folder', group: 'huyen-hoc' },
   { id: '19ghqBqRZxHc0nhgWXzanNyjks29i1jh5', name: '5.02 Khóa Kỳ Môn Độn Giáp Cơ Bản - Thầy Dũng', mimeType: 'application/vnd.google-apps.folder', group: 'huyen-hoc' },
 ];
 
@@ -69,14 +73,25 @@ export async function GET() {
     if (!session?.user?.email) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-    if (!isAllowedEmail(session.user.email)) {
+    if (!(await canAccessLms(session.user.email))) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
     // Sắp xếp nhóm huyen-hoc theo tên
+    const customCourses = await prisma.lmsCourse.findMany({ orderBy: { createdAt: 'asc' } });
+    const dbCourses: CourseEntry[] = customCourses.map((course) => ({
+      id: course.driveId,
+      name: course.name,
+      mimeType: 'application/vnd.google-apps.folder',
+      group: course.group === 'courses' ? 'courses' : 'huyen-hoc',
+      urls: [course.url],
+      isCustom: true,
+    }));
     const sorted = [
       ...STATIC_COURSES.filter(c => c.group === 'courses'),
-      ...STATIC_COURSES.filter(c => c.group === 'huyen-hoc').sort((a, b) => a.name.localeCompare(b.name, 'vi')),
+      ...dbCourses.filter(c => c.group === 'courses'),
+      ...[...STATIC_COURSES.filter(c => c.group === 'huyen-hoc'), ...dbCourses.filter(c => c.group === 'huyen-hoc')]
+        .sort((a, b) => a.name.localeCompare(b.name, 'vi')),
     ];
 
     return NextResponse.json(sorted);
@@ -86,11 +101,67 @@ export async function GET() {
   }
 }
 
+export async function PUT(req: Request) {
+  try {
+    const session = await getServerSession(authOptions);
+    if (!session?.user?.email || !isAdminEmail(session.user.email)) {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    }
+    const body = await req.json() as { id?: string; name?: string; url?: string; group?: 'courses' | 'huyen-hoc' };
+    if (!body.id || !body.name?.trim() || !body.url?.trim()) {
+      return NextResponse.json({ error: 'id, name and url are required' }, { status: 400 });
+    }
+    const name = body.name.trim();
+    const url = body.url.trim();
+    const match = url.match(/folders\/([a-zA-Z0-9_-]+)/);
+    if (!match) return NextResponse.json({ error: 'URL must be a Google Drive folder link' }, { status: 400 });
+    const nextDriveId = match[1];
+    const course = await prisma.$transaction(async (tx) => {
+      const updated = await tx.lmsCourse.update({
+        where: { driveId: body.id },
+        data: {
+          driveId: nextDriveId,
+          name,
+          url,
+          group: body.group === 'courses' ? 'courses' : 'huyen-hoc',
+        },
+      });
+      if (nextDriveId !== body.id) {
+        await tx.lessonProgress.updateMany({
+          where: { courseId: body.id },
+          data: { courseId: nextDriveId },
+        });
+      }
+      return updated;
+    });
+    return NextResponse.json({ ok: true, course });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Unable to update course';
+    return NextResponse.json({ error: message }, { status: 400 });
+  }
+}
+
+export async function DELETE(req: Request) {
+  try {
+    const session = await getServerSession(authOptions);
+    if (!session?.user?.email || !isAdminEmail(session.user.email)) {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    }
+    const body = await req.json() as { id?: string };
+    if (!body.id) return NextResponse.json({ error: 'id is required' }, { status: 400 });
+    await prisma.lmsCourse.delete({ where: { driveId: body.id } });
+    await prisma.lessonProgress.deleteMany({ where: { courseId: body.id } });
+    return NextResponse.json({ ok: true });
+  } catch {
+    return NextResponse.json({ error: 'Course not found or cannot be deleted' }, { status: 404 });
+  }
+}
+
 // POST — thêm khóa học mới (lưu vào custom-courses.json trên server)
 export async function POST(req: Request) {
   try {
     const session = await getServerSession(authOptions);
-    if (!session?.user?.email || !isAllowedEmail(session.user.email)) {
+    if (!session?.user?.email || !isAdminEmail(session.user.email)) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
     const body = await req.json();
@@ -101,7 +172,8 @@ export async function POST(req: Request) {
 
     // Trích ID từ URL Drive
     const match = url.match(/folders\/([a-zA-Z0-9_-]+)/);
-    const id = match ? match[1] : `custom-${Date.now()}`;
+    if (!match) return NextResponse.json({ error: 'URL must be a Google Drive folder link' }, { status: 400 });
+    const id = match[1];
 
     const newEntry: CourseEntry = {
       id, name,
@@ -110,21 +182,13 @@ export async function POST(req: Request) {
       urls: [url],
     };
 
-    // Đọc file custom nếu có, append, ghi lại
-    const fs = await import('fs/promises');
-    const path = await import('path');
-    const filePath = path.join(process.cwd(), 'data', 'custom-courses.json');
-    let existing: CourseEntry[] = [];
-    try {
-      const raw = await fs.readFile(filePath, 'utf-8');
-      existing = JSON.parse(raw);
-    } catch { /* file chưa tồn tại */ }
-
-    existing.push(newEntry);
-    await fs.mkdir(path.join(process.cwd(), 'data'), { recursive: true });
-    await fs.writeFile(filePath, JSON.stringify(existing, null, 2), 'utf-8');
-
+    await prisma.lmsCourse.upsert({
+      where: { driveId: id },
+      create: { driveId: id, name, url, group: newEntry.group },
+      update: { name, url, group: newEntry.group },
+    });
     return NextResponse.json({ success: true, course: newEntry });
+
   } catch (error) {
     console.error('POST courses error:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
