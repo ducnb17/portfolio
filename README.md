@@ -1,5 +1,18 @@
 # Portfolio cá nhân — Nguyễn Bá Đức
 
+## LMS database and persistent sign-in
+
+The LMS now uses PostgreSQL for NextAuth users, sessions and Google OAuth tokens,
+course entries, learning progress, and uploaded-video metadata. Videos remain in
+Google Drive, which avoids putting large media files in a relational database.
+
+1. Copy `.env.database.example` values into `.env.local` and hosting settings.
+2. Run `node node_modules/prisma/build/index.js migrate deploy` with `DATABASE_URL` set.
+3. Sign in once with Google to grant offline Drive permission. Later Drive tokens refresh automatically.
+
+Only `ADMIN_EMAIL` (default `ducnb17@gmail.com`) can add courses or upload files.
+`ALLOWED_EMAILS` controls who may view the LMS.
+
 Website portfolio cá nhân + LMS tích hợp Google Drive, xây dựng bằng **Next.js 14 App Router**, **TypeScript**, **TailwindCSS**, **NextAuth.js**.
 
 ---

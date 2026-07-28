@@ -1,49 +1,45 @@
-// Cấu hình NextAuth — tách ra khỏi route file để tránh lỗi type App Router
-import GoogleProvider from 'next-auth/providers/google';
-import { allowedEmails } from '@/lib/auth';
+import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import type { NextAuthOptions } from 'next-auth';
+import GoogleProvider from 'next-auth/providers/google';
+import { canAccessLms } from '@/lib/auth';
+import { isAdminEmail } from '@/lib/admin';
+import { prisma } from '@/lib/prisma';
 
 export const authOptions: NextAuthOptions = {
+  adapter: PrismaAdapter(prisma),
+  session: {
+    strategy: 'database',
+    maxAge: 30 * 24 * 60 * 60,
+    updateAge: 24 * 60 * 60,
+  },
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
       authorization: {
         params: {
+          // Captures a refresh token once; future Drive token renewal is silent.
           prompt: 'consent',
           access_type: 'offline',
           response_type: 'code',
-          // drive.readonly: đọc file, drive.file: upload file do app tạo ra
           scope: 'openid email profile https://www.googleapis.com/auth/drive.readonly https://www.googleapis.com/auth/drive.file',
         },
       },
     }),
   ],
   callbacks: {
-    // Lưu access token vào JWT để dùng cho Google Drive API
-    async jwt({ token, account }) {
-      if (account?.access_token) {
-        token.accessToken = account.access_token;
+    async session({ session }) {
+      if (session.user) {
+        (session.user as typeof session.user & { isAdmin?: boolean }).isAdmin = isAdminEmail(session.user.email);
       }
-      return token;
-    },
-    // Expose access token trong session
-    async session({ session, token }) {
-      (session as any).accessToken = token.accessToken;
       return session;
     },
-    // Chặn đăng nhập nếu email không nằm trong whitelist
     async signIn({ user }) {
       const email = user.email ?? '';
-      if (!allowedEmails.includes(email.toLowerCase())) {
-        return '/lms?error=AccessDenied';
-      }
+      if (!(await canAccessLms(email))) return '/lms?error=AccessDenied';
       return true;
     },
   },
-  pages: {
-    signIn: '/lms',
-    error: '/lms',
-  },
+  pages: { signIn: '/lms', error: '/lms' },
   secret: process.env.NEXTAUTH_SECRET,
 };

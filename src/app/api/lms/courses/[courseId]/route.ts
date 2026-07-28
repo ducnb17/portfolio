@@ -11,8 +11,9 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/lib/authOptions';
-import { isAllowedEmail } from '@/lib/auth';
+import { canAccessLms } from '@/lib/auth';
 import { listDriveContents, DriveItem } from '@/lib/drive';
+import { getGoogleAccessToken } from '@/lib/google';
 
 export const dynamic = 'force-dynamic';
 
@@ -136,12 +137,12 @@ export async function GET(
     if (!session?.user?.email) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-    if (!isAllowedEmail(session.user.email)) {
+    if (!(await canAccessLms(session.user.email))) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
     const { courseId } = params;
-    const accessToken = (session as any).accessToken as string;
+    const accessToken = await getGoogleAccessToken(session.user.email);
 
     // ── Mock data ──
     if (courseId.startsWith('mock-')) {

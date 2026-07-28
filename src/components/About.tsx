@@ -4,13 +4,14 @@ import { motion } from 'framer-motion';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 export default function About() {
-  const { t } = useLanguage();
+  const { t, locale } = useLanguage();
+  const basic = locale === 'vi' ? 'cơ bản' : locale === 'ja' ? '基礎' : 'basic';
 
   // Skill categories + values — category keys dịch theo ngôn ngữ
   const skills: [string, string[]][] = [
-    [t.about.skillCategories.os, ['Windows', 'Linux', 'MacOS']],
-    [t.about.skillCategories.database, ['MySQL']],
-    [t.about.skillCategories.programming, ['C++', 'Java', 'HTML/CSS', 'Python', 'AI/ML']],
+    [t.about.skillCategories.os, ['Windows', 'Linux', 'VPS', 'NAS / HomeLab']],
+    [t.about.skillCategories.database, [`MySQL (${basic})`]],
+    [t.about.skillCategories.programming, [`Java (${basic})`, 'HTML/CSS', `JavaScript (${basic})`]],
     [t.about.skillCategories.office, ['Excel', 'Word', 'PowerPoint']],
     [t.about.skillCategories.security, ['Cybersecurity Fundamentals']],
   ];

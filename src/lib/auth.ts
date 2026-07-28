@@ -1,1 +1,13 @@
-/** * Danh sách email được phép truy cập LMS */ export const allowedEmails = (process.env.ALLOWED_EMAILS || 'ducnb17@gmail.com').split(',').map(email => email.trim().toLowerCase()); export function isAllowedEmail(email: string): boolean { return allowedEmails.includes(email.trim().toLowerCase()); }
+import { isAdminEmail } from '@/lib/admin';
+import { prisma } from '@/lib/prisma';
+
+export function normalizeEmail(email: string): string {
+  return email.trim().toLowerCase();
+}
+
+export async function canAccessLms(email: string): Promise<boolean> {
+  const normalized = normalizeEmail(email);
+  if (isAdminEmail(normalized)) return true;
+  const access = await prisma.lmsAccessEmail.findUnique({ where: { email: normalized } });
+  return !!access;
+}
