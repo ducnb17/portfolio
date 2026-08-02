@@ -1,6 +1,6 @@
 'use client';
 
-import { Github, Mail, Phone } from 'lucide-react';
+import { Github, Instagram, Mail, Phone } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 export default function Footer() {
@@ -38,6 +38,16 @@ export default function Footer() {
           <div>
             <h3 className="text-xl font-bold text-white mb-4">{t.footer.social}</h3>
             <div className="flex gap-4">
+
+              <a
+                href="https://www.instagram.com/james_nguyen91"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram"
+                className="p-2 rounded-lg bg-gray-800 hover:bg-gradient-to-br hover:from-purple-600 hover:via-pink-500 hover:to-orange-400 transition-colors"
+              >
+                <Instagram className="w-5 h-5" />
+              </a>
 
 <a
   href="https://github.com/ducnb17"
