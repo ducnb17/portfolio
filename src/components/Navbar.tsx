@@ -6,12 +6,15 @@ import { Menu, X, Sun, Moon, Github } from 'lucide-react';
 import { useTheme } from '@/components/ThemeProvider';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
+import { usePathname, useRouter } from 'next/navigation';
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
   const { t } = useLanguage();
+  const pathname = usePathname();
+  const router = useRouter();
 
   // Danh sách nav items lấy từ bản dịch
   const navItems = [
@@ -21,6 +24,7 @@ export default function Navbar() {
     { name: t.nav.education, href: '#education' },
     { name: t.nav.portfolio, href: '#portfolio' },
     { name: t.nav.blog, href: '#blog' },
+    { name: t.nav.news, href: '/news' },
     { name: t.nav.lms, href: '/lms' },
     { name: t.nav.contact, href: '#contact' },
   ];
@@ -33,6 +37,11 @@ export default function Navbar() {
 
   const scrollToSection = (href: string) => {
     if (href.startsWith('#')) {
+      if (pathname !== '/') {
+        router.push(`/${href}`);
+        setIsMobileMenuOpen(false);
+        return;
+      }
       const element = document.querySelector(href);
       element?.scrollIntoView({ behavior: 'smooth' });
     } else {
@@ -53,7 +62,7 @@ export default function Navbar() {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <a
-            href="#home"
+            href={pathname === '/' ? '#home' : '/#home'}
             className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent"
           >
             NBD

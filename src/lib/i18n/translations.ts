@@ -14,6 +14,7 @@ export interface NavTranslations {
   education: string;
   portfolio: string;
   blog: string;
+  news: string;
   lms: string;
   contact: string;
 }
@@ -128,6 +129,7 @@ export const translations: Record<Locale, Translations> = {
       education: 'Học vấn',
       portfolio: 'Portfolio',
       blog: 'Blog',
+      news: 'Tin tức',
       lms: 'LMS',
       contact: 'Liên hệ',
     },
@@ -270,6 +272,7 @@ export const translations: Record<Locale, Translations> = {
       education: 'Education',
       portfolio: 'Portfolio',
       blog: 'Blog',
+      news: 'News',
       lms: 'LMS',
       contact: 'Contact',
     },
@@ -412,6 +415,7 @@ export const translations: Record<Locale, Translations> = {
       education: '学歴',
       portfolio: 'ポートフォリオ',
       blog: 'ブログ',
+      news: 'ニュース',
       lms: 'LMS',
       contact: 'お問い合わせ',
     },
