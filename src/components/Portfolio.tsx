@@ -1,15 +1,11 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Github, Server, Camera, Wifi, Database } from 'lucide-react';
+import { Github, Globe2, AudioLines, ScanSearch } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 
-// Icon cố định theo thứ tự project (không đổi theo ngôn ngữ)
-// Project 1: Docker/AI Local → Server
-// Project 2: Synology NAS/Camera → Camera
-// Project 3: Home Lab/Networking → Wifi
-// Project 4: Database Management → Database
-const ICONS = [Server, Camera, Wifi, Database];
+// Icon cố định theo thứ tự ba dự án trong CV.
+const ICONS = [Globe2, AudioLines, ScanSearch];
 
 export default function Portfolio() {
   const { t } = useLanguage();
@@ -42,6 +38,9 @@ export default function Portfolio() {
                   <Icon className="w-16 h-16 text-white" />
                 </div>
                 <div className="p-6">
+                  <span className="inline-block mb-3 px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 text-sm font-semibold">
+                    {project.status}
+                  </span>
                   <h3 className="text-xl font-bold mb-3 text-gray-800 dark:text-white">
                     {project.title}
                   </h3>
@@ -61,11 +60,13 @@ export default function Portfolio() {
                   <div className="flex gap-3">
                     {/* TODO: Thay href#" bằng link GitHub thật khi có */}
                     <a
-                      href="#"
+                      href={project.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="flex-1 px-4 py-2 bg-gray-800 dark:bg-gray-700 text-white text-center rounded-lg hover:bg-gray-900 dark:hover:bg-gray-600 transition-colors flex items-center justify-center gap-2"
                     >
                       <Github className="w-4 h-4" />
-                      GitHub
+                      {t.portfolio.viewSource}
                     </a>
                   </div>
                 </div>

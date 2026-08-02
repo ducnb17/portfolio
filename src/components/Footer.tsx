@@ -1,6 +1,6 @@
 'use client';
 
-import { Github, Linkedin, Mail, Phone } from 'lucide-react';
+import { Github, Mail, Phone } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 export default function Footer() {
@@ -22,7 +22,7 @@ export default function Footer() {
               </p>
               <p className="flex items-center gap-2">
                 <Phone className="w-5 h-5" />
-                <span>0984-611-191</span>
+                <a href="tel:+84948611191" className="hover:text-cyan-400">0948 611 191</a>
               </p>
             </div>
           </div>
@@ -38,15 +38,7 @@ export default function Footer() {
           <div>
             <h3 className="text-xl font-bold text-white mb-4">{t.footer.social}</h3>
             <div className="flex gap-4">
-              <a
-                href="https://linkedin.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="LinkedIn"
-                className="p-2 rounded-lg bg-gray-800 hover:bg-cyan-600 transition-colors"
-              >
-                <Linkedin className="w-5 h-5" />
-              </a>
+
 <a
   href="https://github.com/ducnb17"
   target="_blank"

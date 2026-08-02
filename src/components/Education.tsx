@@ -11,6 +11,8 @@ const certifications = [
   { name: 'JLPT N4', issuer: 'Japan Foundation', year: '2017' },
 ];
 
+const inProgress = ['CCNA', 'TCM Security - PEH', 'LPI 1, 2'];
+
 export default function Education() {
   const { t } = useLanguage();
   const educationItems = t.education.items;
@@ -81,6 +83,16 @@ export default function Education() {
                     {cert.year}
                   </span>
                 </motion.div>
+              ))}
+            </div>
+            <h3 className="text-xl font-bold mt-8 mb-4 text-gray-800 dark:text-white">
+              {t.education.inProgressLabel}
+            </h3>
+            <div className="flex flex-wrap gap-3">
+              {inProgress.map((item) => (
+                <span key={item} className="px-4 py-2 rounded-full border border-cyan-400 text-cyan-700 dark:text-cyan-300 bg-cyan-50 dark:bg-cyan-950/30">
+                  {item}
+                </span>
               ))}
             </div>
           </div>

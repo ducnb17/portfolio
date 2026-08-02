@@ -37,10 +37,11 @@ export interface AboutTranslations {
   languages: string;
   skillCategories: {
     os: string;
+    infrastructure: string;
     database: string;
     programming: string;
-    office: string;
-    security: string;
+    aiTools: string;
+    hardware: string;
   };
   langVi: string;
   langJa: string;
@@ -61,6 +62,7 @@ export interface EducationTranslations {
   sectionTitle: string;
   educationLabel: string;
   certificationsLabel: string;
+  inProgressLabel: string;
   items: Array<{
     degree: string;
     school: string;
@@ -75,7 +77,16 @@ export interface PortfolioTranslations {
     title: string;
     description: string;
     tech: string[];
+    status: string;
+    link: string;
   }>;
+  viewSource: string;
+}
+
+export interface LearningTranslations {
+  sectionTitle: string;
+  subtitle: string;
+  items: Array<{ title: string; description: string }>;
 }
 
 export interface ContactTranslations {
@@ -114,6 +125,7 @@ export interface Translations {
   experience: ExperienceTranslations;
   education: EducationTranslations;
   portfolio: PortfolioTranslations;
+  learning: LearningTranslations;
   contact: ContactTranslations;
   footer: FooterTranslations;
 }
@@ -122,432 +134,103 @@ export interface Translations {
 
 export const translations: Record<Locale, Translations> = {
   vi: {
-    nav: {
-      home: 'Trang chủ',
-      about: 'Giới thiệu',
-      experience: 'Kinh nghiệm',
-      education: 'Học vấn',
-      portfolio: 'Portfolio',
-      blog: 'Blog',
-      news: 'Tin tức',
-      lms: 'LMS',
-      contact: 'Liên hệ',
-    },
+    nav: { home: 'Trang chủ', about: 'Giới thiệu', experience: 'Kinh nghiệm', education: 'Học vấn', portfolio: 'Dự án', blog: 'Đang học', news: 'Tin tức', lms: 'LMS', contact: 'Liên hệ' },
     hero: {
-      title: 'Information Systems Technician',
-      description:
-        'Tốt nghiệp Hệ thống thông tin (PTIT), có nền tảng vững chắc về vận hành hệ thống, xử lý sự cố phần cứng/phần mềm và cơ sở dữ liệu. Định hướng phát triển sâu về AI và Cybersecurity.',
-      viewPortfolio: 'Xem Portfolio',
-      contact: 'Liên hệ',
-      lmsCourses: 'LMS Khóa học',
-      github: 'GitHub',
-      githubUrl: 'https://github.com/ducnb17',
+      title: 'System Operations & AI-Assisted Projects',
+      description: 'Kỹ thuật viên CNTT tập trung vào IT Support và System Operations; có kinh nghiệm vận hành VPS, web, cơ sở dữ liệu, ảo hóa và xử lý sự cố. Thực hành triển khai dự án với AI hỗ trợ theo quy trình có kiểm soát.',
+      viewPortfolio: 'Xem dự án', contact: 'Liên hệ', lmsCourses: 'Khám phá LMS', github: 'GitHub', githubUrl: 'https://github.com/ducnb17',
     },
     about: {
-      sectionTitle: 'Giới thiệu',
-      jobTitle: 'Information Systems Technician',
-      description:
-        'Tốt nghiệp chuyên ngành Hệ thống thông tin (PTIT), có nền tảng vững chắc về vận hành hệ thống, xử lý sự cố phần cứng/phần mềm và cơ sở dữ liệu. Có 2 năm học tập tại Nhật Bản (JLPT N4), tác phong làm việc chuẩn mực. Định hướng phát triển sâu về AI và Cybersecurity.',
-      skills: 'Kỹ năng',
-      languages: 'Ngôn ngữ',
-      skillCategories: {
-        os: 'Hệ điều hành',
-        database: 'Cơ sở dữ liệu',
-        programming: 'Lập trình',
-        office: 'Tin học văn phòng',
-        security: 'Cybersecurity',
-      },
-      langVi: '🇻🇳 Tiếng Việt (Bản xứ)',
-      langJa: '🇯🇵 Tiếng Nhật (Giao tiếp cơ bản/N4)',
-      langEn: '🇬🇧 Tiếng Anh (Giao tiếp cơ bản)',
+      sectionTitle: 'Hồ sơ năng lực', jobTitle: 'Kỹ thuật viên CNTT / IT Support / System Operations',
+      description: 'Kỹ thuật viên hệ thống thông tin với nền tảng vận hành VPS, web, database, ảo hóa và xử lý sự cố phần cứng/phần mềm. Tôi thực hành workflow vibe coding có kiểm soát: khảo sát kiến trúc, dùng AI hỗ trợ triển khai, tự kiểm thử và sửa lỗi, quản lý mã nguồn rồi deploy theo checklist. Định hướng phát triển ở System Operations và AI/Cybersecurity.',
+      skills: 'Kỹ năng kỹ thuật', languages: 'Ngoại ngữ',
+      skillCategories: { os: 'Hệ điều hành', infrastructure: 'Hạ tầng & Cloud', database: 'Cơ sở dữ liệu', programming: 'Lập trình cơ bản', aiTools: 'AI hỗ trợ triển khai', hardware: 'Phần cứng & Homelab' },
+      langVi: '🇻🇳 Tiếng Việt (Bản xứ)', langJa: '🇯🇵 Tiếng Nhật (JLPT N4)', langEn: '🇬🇧 Tiếng Anh (Đọc hiểu tài liệu kỹ thuật)',
     },
     experience: {
-      sectionTitle: 'Kinh nghiệm làm việc',
+      sectionTitle: 'Kinh nghiệm & Thực hành',
       jobs: [
-        {
-          title: 'Kỹ thuật viên CNTT tự do',
-          company: 'Freelancer',
-          period: '2018 - Nay',
-          description:
-            'Cài đặt/cấu hình hệ điều hành, sửa chữa nâng cấp phần cứng; tham gia dự án xử lý, phân loại, gắn nhãn dữ liệu hình ảnh (Data Labeling) cho mô hình AI.',
-        },
-        {
-          title: 'Học viên & Thực tập sinh CNTT',
-          company: 'FUNiX, BKACAD',
-          period: '2017 - 2019',
-          description:
-            'Hoàn thành khóa Automotive Programming (C++, UI) tại FUNiX, Java Web tại BKACAD; thực tập ngắn hạn Backend Java.',
-        },
-        {
-          title: 'Nhân viên hỗ trợ - Vận hành kho & CSKH',
-          company: 'Thời vụ',
-          period: 'Trước 2017',
-          description:
-            'Phân loại hàng hóa, kiểm tra chứng từ, đối chiếu log xuất-nhập kho TMĐT; hỗ trợ kỹ thuật dịch vụ di động qua tổng đài.',
-        },
+        { title: 'Kỹ thuật viên hệ thống & Tự động hóa CNTT', company: 'Dự án cá nhân / Thực hành vận hành', period: '2023 - Hiện tại', description: 'Quản trị VPS Linux và dịch vụ web; cấu hình Nginx/Apache, SSL, DNS, database; giám sát và khắc phục sự cố. Dùng AI hỗ trợ mô tả yêu cầu, chạy thử, kiểm tra kết quả, ghi nhận lỗi, chỉnh sửa và deploy theo checklist. Vận hành môi trường VMware, VirtualBox, Proxmox và Docker.' },
+        { title: 'Kỹ thuật viên CNTT', company: 'Freelance', period: '2018 - Hiện tại', description: 'Lắp ráp, nâng cấp và sửa chữa PC; cài đặt, tối ưu hệ điều hành; tư vấn NAS và Homelab. Phân tích, xử lý sự cố phần cứng/phần mềm cho người dùng.' },
       ],
     },
     education: {
-      sectionTitle: 'Học vấn & Chứng chỉ',
-      educationLabel: 'Học vấn',
-      certificationsLabel: 'Chứng chỉ',
+      sectionTitle: 'Học vấn & Chứng chỉ', educationLabel: 'Học vấn', certificationsLabel: 'Chứng chỉ', inProgressLabel: 'Đang học',
       items: [
-        {
-          degree: 'Hệ Cao đẳng - Hệ thống thông tin',
-          school: 'Học viện Công nghệ Bưu chính Viễn thông (PTIT)',
-          period: '2011 - 2014',
-        },
-        {
-          degree: 'Du học sinh - Ngôn ngữ Nhật',
-          school: 'Trường Nhật ngữ JAM, Niigata, Nhật Bản',
-          period: '2015 - 2017',
-        },
+        { degree: 'Hệ Cao đẳng - Hệ thống thông tin', school: 'Học viện Công nghệ Bưu chính Viễn thông (PTIT)', period: '2011 - 2014' },
+        { degree: 'Du học sinh - Ngôn ngữ Nhật', school: 'Trường Nhật ngữ JAM, Niigata, Nhật Bản', period: '2015 - 2017' },
       ],
     },
     portfolio: {
-      sectionTitle: 'Portfolio',
-      subtitle: 'Một số dự án tiêu biểu trong lĩnh vực AI và hạ tầng hệ thống',
+      sectionTitle: 'Dự án Vibe-code tiêu biểu', subtitle: 'Các dự án được triển khai bằng workflow AI hỗ trợ, với vai trò tập trung vào yêu cầu, thử nghiệm, xử lý lỗi, vận hành và trải nghiệm người dùng.', viewSource: 'Xem mã nguồn',
       projects: [
-        {
-          title: 'Triển khai mô hình AI Local (Ollama) trên Docker',
-          description:
-            'Tự cấu hình Docker và Ollama để chạy các mô hình ngôn ngữ lớn (LLM) trên máy cá nhân. Xử lý bài toán tối ưu VRAM để tránh tràn bộ nhớ khi chạy mô hình trên GPU phổ thông (RTX 3060).',
-          tech: ['Docker', 'Ollama', 'AI Local'],
-        },
-        {
-          title: 'Giải pháp lưu trữ và giám sát Camera qua Synology NAS',
-          description:
-            'Cấu hình hệ thống NAS Synology, tích hợp và quản lý luồng dữ liệu từ camera an ninh, thiết lập phân quyền truy cập và lưu trữ dữ liệu an toàn.',
-          tech: ['Synology NAS', 'Surveillance', 'Storage'],
-        },
-        {
-          title: 'Thiết kế và tối ưu hạ tầng mạng nội bộ (Home Lab)',
-          description:
-            'Tự thiết kế và xử lý sự cố hạ tầng mạng gia đình, bao gồm bài toán giải nhiệt cho modem/router quá tải nhiệt gây nghẽn mạng, tối ưu hiệu năng đường truyền.',
-          tech: ['Networking', 'Troubleshooting', 'Home Lab'],
-        },
-        {
-          title: 'Quản lý cơ sở dữ liệu - Hệ thống vận hành',
-          description:
-            'Công cụ quản lý và vận hành cơ sở dữ liệu MySQL, tối ưu truy vấn và sao lưu dữ liệu.',
-          tech: ['MySQL', 'Database', 'Backup'],
-        },
+        { title: 'Portfolio cá nhân & LMS', status: 'Đang vận hành', description: 'Xác định nhu cầu, dùng AI tạo và điều chỉnh mã nguồn, chạy thử, kiểm tra giao diện rồi triển khai website portfolio/LMS lên Ubuntu VPS. Vận hành đăng nhập Google, phân quyền admin, upload nội dung và lưu dữ liệu.', tech: ['AI-assisted', 'Next.js', 'Ubuntu VPS'], link: 'https://github.com/ducnb17/portfolio' },
+        { title: 'Soniox Live Translate', status: 'Đã chạy - Đang tối ưu', description: 'Ứng dụng Windows dịch giọng nói thời gian thực với lựa chọn thiết bị âm thanh, lịch sử hội thoại và xuất dữ liệu. Vai trò tập trung vào mô tả yêu cầu, thử nghiệm, phản hồi lỗi và kiểm tra trải nghiệm.', tech: ['Python', 'Soniox', 'Windows'], link: 'https://github.com/ducnb17/soniox-live-translate' },
+        { title: 'Async Web Crawler', status: 'Đang phát triển', description: 'Prototype crawler được xây dựng theo từng milestone, hướng tới quản lý crawl jobs, tiến trình và kết quả. Chưa có bản end-to-end sẵn sàng vận hành và đang được hoàn thiện từng phần.', tech: ['Python', 'AsyncIO', 'Crawler'], link: 'https://github.com/ducnb17/crawler' },
       ],
     },
-
-    contact: {
-      sectionTitle: 'Liên hệ',
-      infoTitle: 'Thông tin liên hệ',
-      infoDesc: 'Tôi luôn sẵn sàng lắng nghe và hợp tác. Hãy liên hệ với tôi qua các kênh sau:',
-      phone: 'Điện thoại',
-      address: 'Địa chỉ',
-      addressValue: 'TP. Hà Nội, Việt Nam',
-      email: 'Email',
-      formName: 'Họ và tên',
-      formNamePlaceholder: 'Nguyễn Văn A',
-      formSubject: 'Tiêu đề',
-      formSubjectPlaceholder: 'Tiêu đề liên hệ',
-      formMessage: 'Nội dung',
-      formMessagePlaceholder: 'Nội dung tin nhắn...',
-      formSubmit: 'Gửi tin nhắn',
-      formSuccess: 'Cảm ơn bạn đã liên hệ! Tôi sẽ phản hồi sớm nhất có thể.',
+    learning: {
+      sectionTitle: 'Đang học', subtitle: 'Các lộ trình đang theo đuổi để củng cố năng lực hạ tầng, Linux và an toàn thông tin.',
+      items: [
+        { title: 'CCNA', description: 'Kiến thức nền tảng mạng, routing, switching và xử lý sự cố.' },
+        { title: 'TCM Security - PEH', description: 'Nền tảng ethical hacking và phương pháp kiểm thử bảo mật thực hành.' },
+        { title: 'LPI 1, 2', description: 'Quản trị Linux từ nền tảng đến vận hành hệ thống nâng cao.' },
+      ],
     },
-    footer: {
-      contact: 'Liên hệ',
-      address: 'Địa chỉ',
-      addressLine1: 'TP. Hà Nội, Việt Nam',
-      addressLine2: '',
-      social: 'Mạng xã hội',
-      github: 'GitHub',
-      githubUrl: 'https://github.com/ducnb17',
-      rights: '© 2025 Nguyễn Bá Đức. Tất cả các quyền được bảo lưu.',
-    },
+    contact: { sectionTitle: 'Liên hệ', infoTitle: 'Thông tin liên hệ', infoDesc: 'Tôi sẵn sàng trao đổi về cơ hội Kỹ thuật viên CNTT, IT Support, System Operations và các dự án vận hành có AI hỗ trợ.', phone: 'Điện thoại', address: 'Địa chỉ', addressValue: 'TP. Hà Nội, Việt Nam', email: 'Email', formName: 'Họ và tên', formNamePlaceholder: 'Nguyễn Văn A', formSubject: 'Tiêu đề', formSubjectPlaceholder: 'Tiêu đề liên hệ', formMessage: 'Nội dung', formMessagePlaceholder: 'Nội dung tin nhắn...', formSubmit: 'Gửi tin nhắn', formSuccess: 'Cảm ơn bạn đã liên hệ! Tôi sẽ phản hồi sớm nhất có thể.' },
+    footer: { contact: 'Liên hệ', address: 'Địa chỉ', addressLine1: 'TP. Hà Nội, Việt Nam', addressLine2: '', social: 'Mạng xã hội', github: 'GitHub', githubUrl: 'https://github.com/ducnb17', rights: '© 2026 Nguyễn Bá Đức. Tất cả các quyền được bảo lưu.' },
   },
 
   en: {
-    nav: {
-      home: 'Home',
-      about: 'About',
-      experience: 'Experience',
-      education: 'Education',
-      portfolio: 'Portfolio',
-      blog: 'Blog',
-      news: 'News',
-      lms: 'LMS',
-      contact: 'Contact',
-    },
-    hero: {
-      title: 'Information Systems Technician',
-      description:
-        'Graduate in Information Systems (PTIT) with a strong foundation in system operations, hardware/software troubleshooting, and databases. Pursuing deeper expertise in AI and Cybersecurity.',
-      viewPortfolio: 'View Portfolio',
-      contact: 'Contact Me',
-      lmsCourses: 'LMS Courses',
-      github: 'GitHub',
-      githubUrl: 'https://github.com/ducnb17',
-    },
-    about: {
-      sectionTitle: 'About Me',
-      jobTitle: 'Information Systems Technician',
-      description:
-        'Graduate in Information Systems (PTIT) with a solid background in system operations, hardware/software troubleshooting, and databases. Spent 2 years studying in Japan (JLPT N4) with professional working standards. Pursuing deeper expertise in AI and Cybersecurity.',
-      skills: 'Skills',
-      languages: 'Languages',
-      skillCategories: {
-        os: 'Operating Systems',
-        database: 'Databases',
-        programming: 'Programming',
-        office: 'Office Tools',
-        security: 'Cybersecurity',
-      },
-      langVi: '🇻🇳 Vietnamese (Native)',
-      langJa: '🇯🇵 Japanese (Basic / JLPT N4)',
-      langEn: '🇬🇧 English (Basic Communication)',
-    },
-    experience: {
-      sectionTitle: 'Work Experience',
-      jobs: [
-        {
-          title: 'Freelance IT Technician',
-          company: 'Freelancer',
-          period: '2018 - Present',
-          description:
-            'OS installation/configuration, hardware repair and upgrades; participated in image data processing, classification, and labeling (Data Labeling) projects for AI models.',
-        },
-        {
-          title: 'IT Trainee & Intern',
-          company: 'FUNiX, BKACAD',
-          period: '2017 - 2019',
-          description:
-            'Completed Automotive Programming (C++, UI) at FUNiX and Java Web at BKACAD; short-term Backend Java internship.',
-        },
-        {
-          title: 'Support Staff - Warehouse & Customer Service',
-          company: 'Seasonal',
-          period: 'Before 2017',
-          description:
-            'Goods classification, document verification, e-commerce warehouse log reconciliation; technical support for mobile services via call center.',
-        },
-      ],
-    },
-    education: {
-      sectionTitle: 'Education & Certifications',
-      educationLabel: 'Education',
-      certificationsLabel: 'Certifications',
-      items: [
-        {
-          degree: 'Associate Degree - Information Systems',
-          school: 'Posts and Telecommunications Institute of Technology (PTIT)',
-          period: '2011 - 2014',
-        },
-        {
-          degree: 'International Student - Japanese Language',
-          school: 'JAM Japanese Language School, Niigata, Japan',
-          period: '2015 - 2017',
-        },
-      ],
-    },
-    portfolio: {
-      sectionTitle: 'Portfolio',
-      subtitle: 'Featured projects in AI and system infrastructure',
-      projects: [
-        {
-          title: 'Local AI Model Deployment (Ollama) on Docker',
-          description:
-            'Self-configured Docker and Ollama to run large language models (LLM) on a personal machine. Solved VRAM optimization to prevent out-of-memory errors when running models on a consumer GPU (RTX 3060).',
-          tech: ['Docker', 'Ollama', 'AI Local'],
-        },
-        {
-          title: 'Camera Storage & Monitoring via Synology NAS',
-          description:
-            'Configured a Synology NAS system, integrated and managed data streams from security cameras, set up access control and secure data storage.',
-          tech: ['Synology NAS', 'Surveillance', 'Storage'],
-        },
-        {
-          title: 'Home Lab Network Infrastructure Design & Optimization',
-          description:
-            'Self-designed and troubleshot home network infrastructure, including thermal management for overheating modem/router causing network congestion, and optimized throughput performance.',
-          tech: ['Networking', 'Troubleshooting', 'Home Lab'],
-        },
-        {
-          title: 'Database Management - Operations System',
-          description:
-            'Tool for managing and operating MySQL databases, optimizing queries and data backups.',
-          tech: ['MySQL', 'Database', 'Backup'],
-        },
-      ],
-    },
-
-    contact: {
-      sectionTitle: 'Contact',
-      infoTitle: 'Contact Information',
-      infoDesc: 'I am always open to listening and collaborating. Feel free to reach me through the following channels:',
-      phone: 'Phone',
-      address: 'Address',
-      addressValue: 'Hanoi City, Vietnam',
-      email: 'Email',
-      formName: 'Full Name',
-      formNamePlaceholder: 'John Doe',
-      formSubject: 'Subject',
-      formSubjectPlaceholder: 'Contact subject',
-      formMessage: 'Message',
-      formMessagePlaceholder: 'Your message...',
-      formSubmit: 'Send Message',
-      formSuccess: 'Thank you for reaching out! I will get back to you as soon as possible.',
-    },
-    footer: {
-      contact: 'Contact',
-      address: 'Address',
-      addressLine1: 'Hanoi City, Vietnam',
-      addressLine2: '',
-      social: 'Social Media',
-      github: 'GitHub',
-      githubUrl: 'https://github.com/ducnb17',
-      rights: '© 2025 Nguyễn Bá Đức. All rights reserved.',
-    },
+    nav: { home: 'Home', about: 'Profile', experience: 'Experience', education: 'Education', portfolio: 'Projects', blog: 'Learning', news: 'News', lms: 'LMS', contact: 'Contact' },
+    hero: { title: 'System Operations & AI-Assisted Projects', description: 'IT technician focused on IT Support and System Operations, with hands-on experience in VPS, web services, databases, virtualization, and troubleshooting. I deliver AI-assisted projects through a controlled workflow.', viewPortfolio: 'View Projects', contact: 'Contact Me', lmsCourses: 'Explore LMS', github: 'GitHub', githubUrl: 'https://github.com/ducnb17' },
+    about: { sectionTitle: 'Professional Profile', jobTitle: 'IT Technician / IT Support / System Operations', description: 'Information systems technician with hands-on experience in VPS and web operations, databases, virtualization, and hardware/software troubleshooting. My controlled vibe-coding workflow covers architecture review, AI-assisted implementation, testing, debugging, source control, and checklist-based deployment. I am developing deeper expertise in System Operations and AI/Cybersecurity.', skills: 'Technical Skills', languages: 'Languages', skillCategories: { os: 'Operating Systems', infrastructure: 'Infrastructure & Cloud', database: 'Database', programming: 'Basic Programming', aiTools: 'AI-Assisted Delivery', hardware: 'Hardware & Homelab' }, langVi: '🇻🇳 Vietnamese (Native)', langJa: '🇯🇵 Japanese (JLPT N4)', langEn: '🇬🇧 English (Technical reading)' },
+    experience: { sectionTitle: 'Experience & Practice', jobs: [
+      { title: 'Systems & IT Automation Technician', company: 'Personal Projects / Operations Practice', period: '2023 - Present', description: 'Administer Linux VPS and web services; configure Nginx/Apache, SSL, DNS, and databases; monitor and troubleshoot services. Use AI to turn requirements into tested changes, record defects, iterate, and deploy through checklists. Operate VMware, VirtualBox, Proxmox, and Docker environments.' },
+      { title: 'IT Technician', company: 'Freelance', period: '2018 - Present', description: 'Build, upgrade, and repair PCs; install and optimize operating systems; advise on NAS and homelab setups; diagnose hardware and software issues for users.' },
+    ] },
+    education: { sectionTitle: 'Education & Certifications', educationLabel: 'Education', certificationsLabel: 'Certifications', inProgressLabel: 'In Progress', items: [
+      { degree: 'Associate Degree - Information Systems', school: 'Posts and Telecommunications Institute of Technology (PTIT)', period: '2011 - 2014' },
+      { degree: 'International Student - Japanese Language', school: 'JAM Japanese Language School, Niigata, Japan', period: '2015 - 2017' },
+    ] },
+    portfolio: { sectionTitle: 'Featured AI-Assisted Projects', subtitle: 'Projects delivered through AI-assisted workflows, with my contribution centered on requirements, testing, troubleshooting, operations, and user experience.', viewSource: 'View Source', projects: [
+      { title: 'Personal Portfolio & LMS', status: 'Live', description: 'Defined requirements, used AI to generate and refine code, tested the interface, and deployed the portfolio/LMS to an Ubuntu VPS. Operate Google sign-in, admin authorization, content uploads, and data persistence.', tech: ['AI-assisted', 'Next.js', 'Ubuntu VPS'], link: 'https://github.com/ducnb17/portfolio' },
+      { title: 'Soniox Live Translate', status: 'Working - Optimizing', description: 'Windows real-time speech translation app with audio-device selection, conversation history, and data export. My role focuses on requirements, testing, defect feedback, and experience validation.', tech: ['Python', 'Soniox', 'Windows'], link: 'https://github.com/ducnb17/soniox-live-translate' },
+      { title: 'Async Web Crawler', status: 'In Development', description: 'Milestone-based crawler prototype intended to manage crawl jobs, progress, and results. It is not yet end-to-end production-ready and is being completed incrementally.', tech: ['Python', 'AsyncIO', 'Crawler'], link: 'https://github.com/ducnb17/crawler' },
+    ] },
+    learning: { sectionTitle: 'Currently Learning', subtitle: 'Active learning paths in networking, Linux operations, and cybersecurity.', items: [
+      { title: 'CCNA', description: 'Networking fundamentals, routing, switching, and troubleshooting.' },
+      { title: 'TCM Security - PEH', description: 'Ethical hacking foundations and practical security testing methodology.' },
+      { title: 'LPI 1, 2', description: 'Linux administration from fundamentals to advanced operations.' },
+    ] },
+    contact: { sectionTitle: 'Contact', infoTitle: 'Contact Information', infoDesc: 'I am open to opportunities in IT Technician, IT Support, System Operations, and AI-assisted operations projects.', phone: 'Phone', address: 'Address', addressValue: 'Hanoi City, Vietnam', email: 'Email', formName: 'Full Name', formNamePlaceholder: 'John Doe', formSubject: 'Subject', formSubjectPlaceholder: 'Contact subject', formMessage: 'Message', formMessagePlaceholder: 'Your message...', formSubmit: 'Send Message', formSuccess: 'Thank you for reaching out! I will get back to you as soon as possible.' },
+    footer: { contact: 'Contact', address: 'Address', addressLine1: 'Hanoi City, Vietnam', addressLine2: '', social: 'Social Media', github: 'GitHub', githubUrl: 'https://github.com/ducnb17', rights: '© 2026 Nguyễn Bá Đức. All rights reserved.' },
   },
 
   ja: {
-    nav: {
-      home: 'ホーム',
-      about: '自己紹介',
-      experience: '職歴',
-      education: '学歴',
-      portfolio: 'ポートフォリオ',
-      blog: 'ブログ',
-      news: 'ニュース',
-      lms: 'LMS',
-      contact: 'お問い合わせ',
-    },
-    hero: {
-      title: '情報システム技術者',
-      description:
-        'PTIT情報システム学科卒業。システム運用、ハード・ソフトウェアのトラブルシューティング、データベースに強い基盤を持つ。AIとサイバーセキュリティの専門知識をさらに深めることを目指している。',
-      viewPortfolio: 'ポートフォリオを見る',
-      contact: 'お問い合わせ',
-      lmsCourses: 'LMSコース',
-      github: 'GitHub',
-      githubUrl: 'https://github.com/ducnb17',
-    },
-    about: {
-      sectionTitle: '自己紹介',
-      jobTitle: '情報システム技術者',
-      description:
-        'PTIT情報システム学科卒業。システム運用、ハード・ソフトウェアのトラブルシューティング、データベースに強い基盤を持つ。日本に2年間留学（JLPT N4取得）し、日本式の仕事スタイルを身につけた。AIとサイバーセキュリティの専門知識を深めることを目指している。',
-      skills: 'スキル',
-      languages: '言語',
-      skillCategories: {
-        os: 'オペレーティングシステム',
-        database: 'データベース',
-        programming: 'プログラミング',
-        office: 'オフィスツール',
-        security: 'サイバーセキュリティ',
-      },
-      langVi: '🇻🇳 ベトナム語（母国語）',
-      langJa: '🇯🇵 日本語（日常会話 / JLPT N4）',
-      langEn: '🇬🇧 英語（基本的なコミュニケーション）',
-    },
-    experience: {
-      sectionTitle: '職歴',
-      jobs: [
-        {
-          title: 'フリーランスITエンジニア',
-          company: 'フリーランス',
-          period: '2018年 - 現在',
-          description:
-            'OSのインストール・設定、ハードウェアの修理・アップグレード。AIモデル向け画像データの処理・分類・ラベリング（データラベリング）プロジェクトに参加。',
-        },
-        {
-          title: 'IT研修生・インターン',
-          company: 'FUNiX, BKACAD',
-          period: '2017年 - 2019年',
-          description:
-            'FUNiXにてAutomotiveプログラミング（C++, UI）、BKACADにてJava Webを修了。Javaバックエンドの短期インターンシップ経験あり。',
-        },
-        {
-          title: 'サポートスタッフ - 倉庫運営・カスタマーサービス',
-          company: '季節雇用',
-          period: '2017年以前',
-          description:
-            '商品の仕分け、書類確認、EC倉庫の入出庫ログ照合。コールセンターにてモバイルサービスの技術サポート業務。',
-        },
-      ],
-    },
-    education: {
-      sectionTitle: '学歴・資格',
-      educationLabel: '学歴',
-      certificationsLabel: '資格',
-      items: [
-        {
-          degree: '準学士 - 情報システム学科',
-          school: '郵政通信工科大学（PTIT）',
-          period: '2011年 - 2014年',
-        },
-        {
-          degree: '留学生 - 日本語学科',
-          school: 'JAM日本語学校、新潟、日本',
-          period: '2015年 - 2017年',
-        },
-      ],
-    },
-    portfolio: {
-      sectionTitle: 'ポートフォリオ',
-      subtitle: 'AIおよびシステムインフラ分野の代表的なプロジェクト',
-      projects: [
-        {
-          title: 'DockerでのローカルAIモデル（Ollama）デプロイ',
-          description:
-            'DockerとOllamaを自己設定し、個人のマシンで大規模言語モデル（LLM）を実行。一般向けGPU（RTX 3060）でのモデル実行時のVRAMオーバーフロー防止のための最適化を実施。',
-          tech: ['Docker', 'Ollama', 'AI Local'],
-        },
-        {
-          title: 'Synology NASによるカメラ録画・監視システム',
-          description:
-            'Synology NASシステムを構築し、防犯カメラからのデータストリームを統合・管理。アクセス権限の設定と安全なデータストレージを実現。',
-          tech: ['Synology NAS', 'Surveillance', 'Storage'],
-        },
-        {
-          title: 'ホームラボネットワークインフラの設計・最適化',
-          description:
-            '家庭用ネットワークインフラを自己設計・トラブルシューティング。モデム/ルーターの過熱による通信障害の冷却対策と、スループット性能の最適化を実施。',
-          tech: ['Networking', 'Troubleshooting', 'Home Lab'],
-        },
-        {
-          title: 'データベース管理 - 運用システム',
-          description:
-            'MySQLデータベースの管理・運用ツール。クエリの最適化とデータバックアップに対応。',
-          tech: ['MySQL', 'Database', 'Backup'],
-        },
-      ],
-    },
-
-    contact: {
-      sectionTitle: 'お問い合わせ',
-      infoTitle: '連絡先情報',
-      infoDesc: 'いつでもご連絡をお待ちしております。以下のチャンネルからお気軽にどうぞ：',
-      phone: '電話番号',
-      address: '住所',
-      addressValue: 'ハノイ市、ベトナム',
-      email: 'メール',
-      formName: 'お名前',
-      formNamePlaceholder: '山田 太郎',
-      formSubject: '件名',
-      formSubjectPlaceholder: 'お問い合わせの件名',
-      formMessage: 'メッセージ',
-      formMessagePlaceholder: 'メッセージをご入力ください...',
-      formSubmit: '送信する',
-      formSuccess: 'お問い合わせありがとうございます！できるだけ早くご返信いたします。',
-    },
-    footer: {
-      contact: '連絡先',
-      address: '住所',
-      addressLine1: 'ハノイ市、ベトナム',
-      addressLine2: '',
-      social: 'ソーシャルメディア',
-      github: 'GitHub',
-      githubUrl: 'https://github.com/ducnb17',
-      rights: '© 2025 Nguyễn Bá Đức. 全著作権所有。',
-    },
+    nav: { home: 'ホーム', about: 'プロフィール', experience: '経験', education: '学歴', portfolio: 'プロジェクト', blog: '学習中', news: 'ニュース', lms: 'LMS', contact: 'お問い合わせ' },
+    hero: { title: 'システム運用・AI支援プロジェクト', description: 'ITサポートとシステム運用を中心に、VPS、Webサービス、データベース、仮想化、障害対応を実践しているIT技術者です。管理された手順でAI支援プロジェクトを展開しています。', viewPortfolio: 'プロジェクトを見る', contact: 'お問い合わせ', lmsCourses: 'LMSを見る', github: 'GitHub', githubUrl: 'https://github.com/ducnb17' },
+    about: { sectionTitle: '職務プロフィール', jobTitle: 'IT技術者 / ITサポート / システム運用', description: 'VPS・Web運用、データベース、仮想化、ハードウェア／ソフトウェアの障害対応を実践する情報システム技術者です。アーキテクチャ確認、AI支援による実装、テスト、修正、ソース管理、チェックリストに基づくデプロイを行っています。システム運用とAI／サイバーセキュリティの専門性向上を目指しています。', skills: '技術スキル', languages: '言語', skillCategories: { os: 'オペレーティングシステム', infrastructure: 'インフラ・クラウド', database: 'データベース', programming: '基礎プログラミング', aiTools: 'AI支援開発・運用', hardware: 'ハードウェア・ホームラボ' }, langVi: '🇻🇳 ベトナム語（母語）', langJa: '🇯🇵 日本語（JLPT N4）', langEn: '🇬🇧 英語（技術文書の読解）' },
+    experience: { sectionTitle: '経験・実践', jobs: [
+      { title: 'システム・IT自動化技術者', company: '個人プロジェクト／運用実践', period: '2023年 - 現在', description: 'Linux VPSとWebサービスを管理し、Nginx/Apache、SSL、DNS、データベースを設定。監視と障害対応を行い、AI支援で要件整理、試験、エラー記録、修正、チェックリストによるデプロイを実施。VMware、VirtualBox、Proxmox、Docker環境も運用しています。' },
+      { title: 'IT技術者', company: 'フリーランス', period: '2018年 - 現在', description: 'PCの組立・アップグレード・修理、OSのインストールと最適化、NAS・ホームラボの相談、利用者のハードウェア／ソフトウェア障害対応を行っています。' },
+    ] },
+    education: { sectionTitle: '学歴・資格', educationLabel: '学歴', certificationsLabel: '取得資格', inProgressLabel: '学習中', items: [
+      { degree: '準学士 - 情報システム', school: '郵政通信技術学院（PTIT）', period: '2011年 - 2014年' },
+      { degree: '留学生 - 日本語', school: 'JAM日本語学校（新潟・日本）', period: '2015年 - 2017年' },
+    ] },
+    portfolio: { sectionTitle: '代表的なAI支援プロジェクト', subtitle: '要件整理、テスト、障害対応、運用、ユーザー体験を中心にAI支援ワークフローで進めたプロジェクトです。', viewSource: 'ソースを見る', projects: [
+      { title: '個人ポートフォリオ & LMS', status: '運用中', description: '要件を定義し、AIでコードを生成・調整、UIをテストしてUbuntu VPSへデプロイ。Googleログイン、管理者権限、コンテンツアップロード、データ保存を運用しています。', tech: ['AI-assisted', 'Next.js', 'Ubuntu VPS'], link: 'https://github.com/ducnb17/portfolio' },
+      { title: 'Soniox Live Translate', status: '動作済み・最適化中', description: '音声デバイス選択、会話履歴、データ出力を備えたWindows向けリアルタイム音声翻訳アプリ。要件整理、試験、不具合フィードバック、使用感の確認を担当しています。', tech: ['Python', 'Soniox', 'Windows'], link: 'https://github.com/ducnb17/soniox-live-translate' },
+      { title: 'Async Web Crawler', status: '開発中', description: 'クロールジョブ、進捗、結果を管理するマイルストーン方式のプロトタイプ。まだエンドツーエンドで運用可能な段階ではなく、段階的に完成させています。', tech: ['Python', 'AsyncIO', 'Crawler'], link: 'https://github.com/ducnb17/crawler' },
+    ] },
+    learning: { sectionTitle: '学習中', subtitle: 'ネットワーク、Linux運用、サイバーセキュリティの学習を継続しています。', items: [
+      { title: 'CCNA', description: 'ネットワーク基礎、ルーティング、スイッチング、障害対応。' },
+      { title: 'TCM Security - PEH', description: '倫理的ハッキングの基礎と実践的なセキュリティテスト。' },
+      { title: 'LPI 1, 2', description: 'Linuxの基礎から高度なシステム運用まで。' },
+    ] },
+    contact: { sectionTitle: 'お問い合わせ', infoTitle: '連絡先', infoDesc: 'IT技術者、ITサポート、システム運用、AI支援運用プロジェクトの機会についてお気軽にご連絡ください。', phone: '電話番号', address: '住所', addressValue: 'ハノイ市、ベトナム', email: 'メール', formName: 'お名前', formNamePlaceholder: '山田 太郎', formSubject: '件名', formSubjectPlaceholder: 'お問い合わせの件名', formMessage: 'メッセージ', formMessagePlaceholder: 'メッセージをご入力ください...', formSubmit: '送信する', formSuccess: 'お問い合わせありがとうございます。できるだけ早くご返信いたします。' },
+    footer: { contact: '連絡先', address: '住所', addressLine1: 'ハノイ市、ベトナム', addressLine2: '', social: 'ソーシャルメディア', github: 'GitHub', githubUrl: 'https://github.com/ducnb17', rights: '© 2026 Nguyễn Bá Đức. 全著作権所有。' },
   },
 } as const;
 

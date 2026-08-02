@@ -8,11 +8,12 @@ export default function About() {
 
   // Skill categories + values — category keys dịch theo ngôn ngữ
   const skills: [string, string[]][] = [
-    [t.about.skillCategories.os, ['Windows', 'Linux', 'MacOS']],
+    [t.about.skillCategories.os, ['Windows', 'Linux (Debian/Ubuntu)', 'macOS']],
+    [t.about.skillCategories.infrastructure, ['VPS Linux', 'Nginx/Apache', 'SSL/DNS', 'Docker', 'Proxmox']],
     [t.about.skillCategories.database, ['MySQL']],
-    [t.about.skillCategories.programming, ['C++', 'Java', 'HTML/CSS', 'Python', 'AI/ML']],
-    [t.about.skillCategories.office, ['Excel', 'Word', 'PowerPoint']],
-    [t.about.skillCategories.security, ['Cybersecurity Fundamentals']],
+    [t.about.skillCategories.programming, ['Java', 'HTML/CSS', 'JavaScript']],
+    [t.about.skillCategories.aiTools, ['Claude', 'Cline', 'Codex', 'VS Code']],
+    [t.about.skillCategories.hardware, ['PC', 'NAS', 'Homelab']],
   ];
 
   return (

@@ -60,10 +60,10 @@ export default function Contact() {
                 <div>
                   <h4 className="font-bold text-gray-800 dark:text-white">{t.contact.phone}</h4>
                   <a
-                    href="tel:+84984611191"
+                    href="tel:+84948611191"
                     className="text-cyan-600 dark:text-cyan-400 hover:underline"
                   >
-                    0984-611-191
+                    0948 611 191
                   </a>
                 </div>
               </div>

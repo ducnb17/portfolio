@@ -8,14 +8,14 @@ import { LanguageProvider } from '@/lib/i18n/LanguageContext';
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 
 export const metadata: Metadata = {
-  title: 'Nguyễn Bá Đức - Kỹ thuật viên Hệ thống thông tin',
+  title: 'Nguyễn Bá Đức - IT Support & System Operations',
   description:
-    'Portfolio cá nhân của Nguyễn Bá Đức - Kỹ thuật viên Hệ thống thông tin, chuyên về AI và Cybersecurity',
-  keywords: ['Nguyễn Bá Đức', 'Portfolio', 'AI', 'Cybersecurity', 'Hệ thống thông tin'],
+    'Portfolio Nguyễn Bá Đức - Kỹ thuật viên CNTT, IT Support và System Operations; vận hành VPS, web, ảo hóa và triển khai dự án với AI hỗ trợ.',
+  keywords: ['Nguyễn Bá Đức', 'IT Support', 'System Operations', 'VPS Linux', 'AI-assisted projects', 'Portfolio'],
   authors: [{ name: 'Nguyễn Bá Đức' }],
   openGraph: {
     title: 'Nguyễn Bá Đức - Portfolio',
-    description: 'Kỹ thuật viên Hệ thống thông tin - AI & Cybersecurity',
+    description: 'IT Technician, IT Support & System Operations - AI-Assisted Projects',
     type: 'website',
   },
 };
