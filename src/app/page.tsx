@@ -5,7 +5,7 @@ import About from '@/components/About';
 import Experience from '@/components/Experience';
 import Education from '@/components/Education';
 import Portfolio from '@/components/Portfolio';
-import Learning from '@/components/Learning';
+import KnowledgeLibrary from '@/components/KnowledgeLibrary';
 import Contact from '@/components/Contact';
 
 export default function Home() {
@@ -17,7 +17,7 @@ export default function Home() {
       <Experience />
       <Education />
       <Portfolio />
-      <Learning />
+      <KnowledgeLibrary />
       <Contact />
       <Footer />
     </main>

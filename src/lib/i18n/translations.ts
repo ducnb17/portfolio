@@ -134,7 +134,7 @@ export interface Translations {
 
 export const translations: Record<Locale, Translations> = {
   vi: {
-    nav: { home: 'Trang chủ', about: 'Giới thiệu', experience: 'Kinh nghiệm', education: 'Học vấn', portfolio: 'Dự án', blog: 'Đang học', news: 'Tin tức', lms: 'LMS', contact: 'Liên hệ' },
+    nav: { home: 'Trang chủ', about: 'Giới thiệu', experience: 'Kinh nghiệm', education: 'Học vấn', portfolio: 'Dự án', blog: 'Chia sẻ kiến thức', news: 'Tin tức', lms: 'LMS', contact: 'Liên hệ' },
     hero: {
       title: 'System Operations & AI-Assisted Projects',
       description: 'Kỹ thuật viên CNTT tập trung vào IT Support và System Operations; có kinh nghiệm vận hành VPS, web, cơ sở dữ liệu, ảo hóa và xử lý sự cố. Thực hành triển khai dự án với AI hỗ trợ theo quy trình có kiểm soát.',
@@ -182,7 +182,7 @@ export const translations: Record<Locale, Translations> = {
   },
 
   en: {
-    nav: { home: 'Home', about: 'Profile', experience: 'Experience', education: 'Education', portfolio: 'Projects', blog: 'Learning', news: 'News', lms: 'LMS', contact: 'Contact' },
+    nav: { home: 'Home', about: 'Profile', experience: 'Experience', education: 'Education', portfolio: 'Projects', blog: 'Knowledge', news: 'News', lms: 'LMS', contact: 'Contact' },
     hero: { title: 'System Operations & AI-Assisted Projects', description: 'IT technician focused on IT Support and System Operations, with hands-on experience in VPS, web services, databases, virtualization, and troubleshooting. I deliver AI-assisted projects through a controlled workflow.', viewPortfolio: 'View Projects', contact: 'Contact Me', lmsCourses: 'Explore LMS', github: 'GitHub', githubUrl: 'https://github.com/ducnb17' },
     about: { sectionTitle: 'Professional Profile', jobTitle: 'IT Technician / IT Support / System Operations', description: 'Information systems technician with hands-on experience in VPS and web operations, databases, virtualization, and hardware/software troubleshooting. My controlled vibe-coding workflow covers architecture review, AI-assisted implementation, testing, debugging, source control, and checklist-based deployment. I am developing deeper expertise in System Operations and AI/Cybersecurity.', skills: 'Technical Skills', languages: 'Languages', skillCategories: { os: 'Operating Systems', infrastructure: 'Infrastructure & Cloud', database: 'Database', programming: 'Basic Programming', aiTools: 'AI-Assisted Delivery', hardware: 'Hardware & Homelab' }, langVi: '🇻🇳 Vietnamese (Native)', langJa: '🇯🇵 Japanese (JLPT N4)', langEn: '🇬🇧 English (Technical reading)' },
     experience: { sectionTitle: 'Experience & Practice', jobs: [
@@ -208,7 +208,7 @@ export const translations: Record<Locale, Translations> = {
   },
 
   ja: {
-    nav: { home: 'ホーム', about: 'プロフィール', experience: '経験', education: '学歴', portfolio: 'プロジェクト', blog: '学習中', news: 'ニュース', lms: 'LMS', contact: 'お問い合わせ' },
+    nav: { home: 'ホーム', about: 'プロフィール', experience: '経験', education: '学歴', portfolio: 'プロジェクト', blog: 'ナレッジ', news: 'ニュース', lms: 'LMS', contact: 'お問い合わせ' },
     hero: { title: 'システム運用・AI支援プロジェクト', description: 'ITサポートとシステム運用を中心に、VPS、Webサービス、データベース、仮想化、障害対応を実践しているIT技術者です。管理された手順でAI支援プロジェクトを展開しています。', viewPortfolio: 'プロジェクトを見る', contact: 'お問い合わせ', lmsCourses: 'LMSを見る', github: 'GitHub', githubUrl: 'https://github.com/ducnb17' },
     about: { sectionTitle: '職務プロフィール', jobTitle: 'IT技術者 / ITサポート / システム運用', description: 'VPS・Web運用、データベース、仮想化、ハードウェア／ソフトウェアの障害対応を実践する情報システム技術者です。アーキテクチャ確認、AI支援による実装、テスト、修正、ソース管理、チェックリストに基づくデプロイを行っています。システム運用とAI／サイバーセキュリティの専門性向上を目指しています。', skills: '技術スキル', languages: '言語', skillCategories: { os: 'オペレーティングシステム', infrastructure: 'インフラ・クラウド', database: 'データベース', programming: '基礎プログラミング', aiTools: 'AI支援開発・運用', hardware: 'ハードウェア・ホームラボ' }, langVi: '🇻🇳 ベトナム語（母語）', langJa: '🇯🇵 日本語（JLPT N4）', langEn: '🇬🇧 英語（技術文書の読解）' },
     experience: { sectionTitle: '経験・実践', jobs: [

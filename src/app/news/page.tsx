@@ -4,7 +4,8 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { getDailyNews, type NewsArticle, type NewsCategory } from '@/lib/news';
 
-export const revalidate = 3600;
+// Rebuild the server-rendered news page at most once every four hours.
+export const revalidate = 14400;
 
 export const metadata: Metadata = {
   title: 'Tin tức hôm nay | Nguyễn Bá Đức',
@@ -63,7 +64,7 @@ export default async function NewsPage() {
       <header className="border-b border-gray-200 bg-gradient-to-br from-cyan-50 via-white to-blue-50 px-4 pb-14 pt-32 dark:border-gray-800 dark:from-gray-950 dark:via-gray-900 dark:to-blue-950/40">
         <div className="container mx-auto max-w-6xl">
           <span className="mb-4 inline-flex items-center gap-2 rounded-full bg-cyan-100 px-3 py-1 text-sm font-semibold text-cyan-800 dark:bg-cyan-900/40 dark:text-cyan-200">
-            <Newspaper className="h-4 w-4" /> Cập nhật hằng ngày
+            <Newspaper className="h-4 w-4" /> Tự động cập nhật mỗi 4 giờ
           </span>
           <h1 className="text-4xl font-black tracking-tight text-gray-900 sm:text-5xl dark:text-white">Tin tức hôm nay</h1>
           <p className="mt-4 max-w-2xl text-lg leading-8 text-gray-600 dark:text-gray-300">
